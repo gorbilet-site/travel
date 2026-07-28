@@ -249,6 +249,24 @@ export default function Home() {
               alt="Марципан и местные сладости в путешествии"
             />
           </figure>
+          <figure className="agent-shot agent-shot-f">
+            <img
+              src={`${publicBase}/images/traveler-family-selfie.webp`}
+              alt="Мама с сыном улыбаются во время прогулки по реке"
+            />
+          </figure>
+          <figure className="agent-shot agent-shot-g">
+            <img
+              src={`${publicBase}/images/traveler-boat-portrait.webp`}
+              alt="Туристка на палубе теплохода"
+            />
+          </figure>
+          <figure className="agent-shot agent-shot-h">
+            <img
+              src={`${publicBase}/images/traveler-mother-daughter.webp`}
+              alt="Мама с дочкой отдыхают на палубе теплохода"
+            />
+          </figure>
         </div>
       </section>
 

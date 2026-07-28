@@ -657,6 +657,18 @@ a {
   object-position: center;
 }
 
+.agent-shot-f img {
+  object-position: center 38%;
+}
+
+.agent-shot-g img {
+  object-position: center 36%;
+}
+
+.agent-shot-h img {
+  object-position: center 42%;
+}
+
 .collage-copy {
   position: relative;
   display: flex;
@@ -1046,7 +1058,7 @@ a:focus-visible {
 
   .agent-collage {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(2, 280px);
+    grid-template-rows: repeat(3, 260px);
     grid-auto-rows: auto;
   }
 
@@ -1079,6 +1091,21 @@ a:focus-visible {
   .agent-shot-e {
     grid-column: 11 / 13;
     grid-row: 2 / 3;
+  }
+
+  .agent-shot-f {
+    grid-column: 1 / 5;
+    grid-row: 3 / 4;
+  }
+
+  .agent-shot-g {
+    grid-column: 5 / 9;
+    grid-row: 3 / 4;
+  }
+
+  .agent-shot-h {
+    grid-column: 9 / 13;
+    grid-row: 3 / 4;
   }
 
   .social-list {
