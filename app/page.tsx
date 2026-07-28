@@ -1,6 +1,38 @@
-const publicBase = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+/* eslint-disable @next/next/no-img-element */
+import { typo } from "@/lib/typo";
 
-const cities = [
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const asset = (path: string) => `${BASE}${path}`;
+
+const NAV = [
+  { href: "#cities", label: "Города" },
+  { href: "#offers", label: "Наш топ" },
+  { href: "#agents", label: "Ваши поездки" },
+  { href: "#socials", label: "Мы в сети" },
+];
+
+/* Секция приветствия. Подписей нет — снимки говорят сами за себя,
+   описание остаётся в alt для читалок и поиска. */
+const HERO_PHOTOS = [
+  {
+    src: "/images/hero-pastries.webp",
+    alt: "Витрина пекарни с плетёными булками и заварными палочками",
+  },
+  {
+    src: "/images/hero-syrniki.webp",
+    alt: "Сырники со сметаной и ягодным соусом в кафе народной кухни",
+  },
+  {
+    src: "/images/hero-spb-breakfast.webp",
+    alt: "Вареники, закуска с икрой и десерт на гастрономическом фестивале",
+  },
+  {
+    src: "/images/hero-sweets.webp",
+    alt: "Жестяные банки конфет «Москва» в кондитерском магазине",
+  },
+];
+
+const CITIES = [
   { name: "Москва", href: "https://gorbilet.ru/go/OH4NtB" },
   { name: "Петербург", href: "https://gorbilet.ru/go/dRaj6P" },
   { name: "Нижний Новгород", href: "https://gorbilet.ru/go/vNHwYL" },
@@ -10,7 +42,7 @@ const cities = [
   { name: "Выборг", href: "https://gorbilet.ru/go/HPlRLU" },
 ];
 
-const offers = [
+const OFFERS = [
   {
     city: "Петербург",
     title: "Корабли на развод мостов в Петербурге",
@@ -38,12 +70,27 @@ const offers = [
   },
 ];
 
-const socialLinks = [
+const AGENT_SHOTS = [
+  { src: "/images/agent-forest.webp", alt: "Туристка во время поездки в оленьем парке" },
+  { src: "/images/agent-heic.webp", alt: "Туристка на смотровой площадке у моря" },
+  { src: "/images/agent-boat-selfie.webp", alt: "Туристка во время прогулки на теплоходе" },
+  { src: "/images/deer.webp", alt: "Пятнистый олень тянется к камере в лесном парке" },
+  { src: "/images/marzipan.webp", alt: "Марципан и местные сладости в путешествии" },
+  { src: "/images/traveler-family-selfie.webp", alt: "Мама с сыном улыбаются во время прогулки по реке" },
+  { src: "/images/traveler-boat-portrait.webp", alt: "Туристка на палубе теплохода" },
+  { src: "/images/traveler-mother-daughter.webp", alt: "Мама с дочкой отдыхают на палубе теплохода" },
+  { src: "/images/hero-church.webp", alt: "Деревянная церковь среди зелёного леса" },
+  { src: "/images/hero-river.webp", alt: "Городской пейзаж с храмами на берегу реки" },
+  { src: "/images/hero-costumes.webp", alt: "Народные костюмы в музейной экспозиции" },
+  { src: "/images/hero-deer.webp", alt: "Олень тянется за угощением в лесном парке" },
+];
+
+const SOCIALS = [
   {
-    name: "Telegram",
+    name: "Instagram",
     handle: "@gorbilet_travel",
-    href: "https://t.me/gorbilet_travel",
-    icon: "/social/telegram.svg",
+    href: "https://www.instagram.com/gorbilet_travel/",
+    icon: "/social/instagram.svg",
   },
   {
     name: "MAX",
@@ -59,254 +106,201 @@ const socialLinks = [
   },
 ];
 
-function typograph(text: string) {
-  let result = text.replace(/—\s+/g, "—\u00a0");
-
-  for (let pass = 0; pass < 3; pass += 1) {
-    result = result.replace(
-      /(^|[\s(])([А-Яа-яЁёA-Za-z]{1,2})\s+(?=\S)/g,
-      "$1$2\u00a0",
-    );
-  }
-
-  return result;
+function Arrow({ dir = "out" }: { dir?: "out" | "down" }) {
+  return (
+    <span className="arrow" aria-hidden="true">
+      {dir === "out" ? "↗" : "↘"}
+    </span>
+  );
 }
 
-function ExternalArrow() {
-  return <span aria-hidden="true">↗</span>;
-}
-
-export default function Home() {
+export default function Page() {
   return (
     <main className="site-shell" id="top">
       <header className="site-nav">
         <a className="nav-brand" href="#top" aria-label="Горбилет — на главную">
           <img
-            className="nav-logo"
-            src={`${publicBase}/brand/logo-full-white.svg`}
+            className="brand-logo"
+            src={asset("/brand/gorbilet-white.svg")}
             alt="Горбилет"
           />
+          <span>Travel</span>
         </a>
-        <nav aria-label="Навигация по сайту">
-          <a href="#cities">Города</a>
-          <a href="#offers">Наш топ</a>
-          <a href="#agents">Ваши поездки</a>
-          <a href="#socials">{typograph("Мы в сети")}</a>
+        <nav className="nav-links" aria-label="Навигация по сайту">
+          {NAV.map((item) => (
+            <a key={item.href} href={item.href}>
+              {item.label}
+            </a>
+          ))}
         </nav>
       </header>
 
+      {/* ПРИВЕТСТВИЕ */}
       <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-title-wrap">
-          <h1 id="hero-title">
-            Куда<br />махнём?
+        <div className="hero-intro">
+          <h1 className="hero-title" id="hero-title">
+            Куда
+            <br />
+            махнём?
           </h1>
         </div>
 
-        <div className="hero-editorial-grid">
-          <div className="hero-visual hero-photo-collage" aria-label="Впечатления из путешествий">
-            <figure className="hero-photo hero-photo-main">
-              <img
-                src={`${publicBase}/images/hero-church.webp`}
-                alt="Деревянная церковь среди зелёного леса"
-              />
-            </figure>
-            <figure className="hero-photo hero-photo-river">
-              <img
-                src={`${publicBase}/images/hero-river.webp`}
-                alt="Городской пейзаж с храмами на берегу реки"
-              />
-            </figure>
-            <figure className="hero-photo hero-photo-costumes">
-              <img
-                src={`${publicBase}/images/hero-costumes.webp`}
-                alt="Народные костюмы в музейной экспозиции"
-              />
-            </figure>
-            <figure className="hero-photo hero-photo-deer">
-              <img
-                src={`${publicBase}/images/hero-deer.webp`}
-                alt="Олень тянется за угощением в лесном парке"
-              />
-            </figure>
-          </div>
+        <div className="hero-grid">
+          <ul className="hero-collage" aria-label="Кадры из поездок">
+            {HERO_PHOTOS.map((photo) => (
+              <li className="hero-photo" key={photo.src}>
+                <img src={asset(photo.src)} alt={photo.alt} loading="eager" />
+              </li>
+            ))}
+          </ul>
 
           <div className="hero-story">
-            <h2>{typograph("Идеи для тех, кому не сидится")}</h2>
+            <h2>{typo("Идеи для тех, кому не сидится")}</h2>
             <p>
-              {typograph(
-                "Выбирайте город, ловите впечатления и сохраняйте планы на следующую поездку. Мы собрали интересные варианты — вам остаётся решить, куда ехать."
+              {typo(
+                "Выбирайте город, ловите впечатления и сохраняйте планы на следующую поездку. Мы собрали интересные варианты — вам остаётся решить, куда ехать.",
               )}
             </p>
             <a className="editorial-link" href="#offers">
-              Смотреть наш топ <ExternalArrow />
+              {typo("Смотреть наш топ")} <Arrow />
             </a>
           </div>
         </div>
-
       </section>
 
+      {/* ГОРОДА */}
       <section className="section cities" id="cities" aria-labelledby="cities-title">
-        <div className="cities-heading">
+        <div className="section-heading">
           <h2 id="cities-title">7 городов</h2>
-          <p>{typograph("От Москвы до камерного Выборга — выбирайте город для следующей поездки")}</p>
+          <p>
+            {typo(
+              "От Москвы до камерного Выборга — выбирайте город для следующей поездки",
+            )}
+          </p>
         </div>
 
-        <div className="city-index">
-          {cities.map((city) => (
-            <a
-              className="city-row"
-              href={city.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              key={city.name}
-              aria-label={`Открыть предложения в городе ${city.name}`}
-            >
-              <strong>{typograph(city.name)}</strong>
-              <span aria-hidden="true">↘</span>
-            </a>
+        <ul className="city-index">
+          {CITIES.map((city) => (
+            <li key={city.name}>
+              <a
+                className="city-row"
+                href={city.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Открыть предложения в городе ${city.name}`}
+              >
+                <strong>{typo(city.name)}</strong>
+                <Arrow dir="down" />
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
 
         <a
-          className="editorial-link city-all-link"
+          className="editorial-link"
           href="https://gorbilet.ru/go/sdu4nZ"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Все города <ExternalArrow />
+          Все города <Arrow />
         </a>
       </section>
 
+      {/* ТОП 5 */}
       <section className="section offers" id="offers" aria-labelledby="offers-title">
-        <div className="offers-heading">
+        <div className="section-heading">
           <h2 id="offers-title">Топ 5</h2>
-          <p>{typograph("Пять маршрутов, чтобы запланировать поездку прямо сейчас")}</p>
+          <p>{typo("Пять маршрутов, чтобы запланировать поездку прямо сейчас")}</p>
         </div>
 
-        <div className="offer-list">
-          {offers.map((offer) => (
-            <a
-              className="offer-card"
-              href={offer.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              key={offer.city}
-              aria-label={`${offer.title}, ${offer.city}`}
-            >
-              <div className="offer-copy">
-                <h3>{typograph(offer.title)}</h3>
-              </div>
-              <div className="offer-action">
-                Открыть <ExternalArrow />
-              </div>
-            </a>
+        <ol className="offer-list">
+          {OFFERS.map((offer, index) => (
+            <li key={offer.href}>
+              <a
+                className="offer-card"
+                href={offer.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${offer.title}, ${offer.city}`}
+              >
+                <span className="offer-number" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="offer-copy">
+                  <span className="offer-city">{typo(offer.city)}</span>
+                  <h3>{typo(offer.title)}</h3>
+                </span>
+                <span className="offer-action">
+                  Открыть <Arrow />
+                </span>
+              </a>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
+      {/* ВАШИ ПОЕЗДКИ */}
       <section className="section agents" id="agents" aria-labelledby="agents-title">
-        <div className="agents-heading">
-          <h2 id="agents-title">{typograph("Счастливые вы в поездках")}</h2>
+        <div className="section-heading">
+          <h2 id="agents-title">{typo("Счастливые вы в поездках")}</h2>
           <p>
-            {typograph(
-              "Смотрите, как прошли поездки у тех, кто решился. Следующая счастливая история может быть вашей."
+            {typo(
+              "Смотрите, как прошли поездки у тех, кто решился. Следующая счастливая история может быть вашей.",
             )}
           </p>
         </div>
 
-        <div className="agent-collage">
-          <figure className="agent-shot agent-shot-a">
-            <img
-              src={`${publicBase}/images/agent-forest.jpg`}
-              alt="Туристка во время поездки в оленьем парке"
-            />
-          </figure>
-          <figure className="agent-shot agent-shot-b">
-            <img
-              src={`${publicBase}/images/agent-heic.jpg`}
-              alt="Туристка на смотровой площадке у моря"
-            />
-          </figure>
-          <div className="collage-copy">
-            <strong>{typograph("Вот какие счастливые вы в поездках")}</strong>
-            <p>{typograph("Истории тех, кто уже решился")}</p>
-          </div>
-          <figure className="agent-shot agent-shot-c">
-            <img
-              src={`${publicBase}/images/agent-boat-selfie.png`}
-              alt="Туристка во время прогулки на теплоходе"
-            />
-          </figure>
-          <figure className="agent-shot agent-shot-d">
-            <img
-              src={`${publicBase}/images/agent-boat-pink.jpg`}
-              alt="Туристка отдыхает во время прогулки по воде"
-            />
-          </figure>
-          <figure className="agent-shot agent-shot-e">
-            <img
-              src={`${publicBase}/images/marzipan.png`}
-              alt="Марципан и местные сладости в путешествии"
-            />
-          </figure>
-          <figure className="agent-shot agent-shot-f">
-            <img
-              src={`${publicBase}/images/traveler-family-selfie.webp`}
-              alt="Мама с сыном улыбаются во время прогулки по реке"
-            />
-          </figure>
-          <figure className="agent-shot agent-shot-g">
-            <img
-              src={`${publicBase}/images/traveler-boat-portrait.webp`}
-              alt="Туристка на палубе теплохода"
-            />
-          </figure>
-          <figure className="agent-shot agent-shot-h">
-            <img
-              src={`${publicBase}/images/traveler-mother-daughter.webp`}
-              alt="Мама с дочкой отдыхают на палубе теплохода"
-            />
-          </figure>
-        </div>
+        <ul className="agent-collage" aria-label="Фотографии из поездок">
+          {AGENT_SHOTS.map((shot) => (
+            <li className="agent-shot" key={shot.src}>
+              <img src={asset(shot.src)} alt={shot.alt} loading="lazy" />
+            </li>
+          ))}
+        </ul>
       </section>
 
+      {/* СОЦСЕТИ */}
       <section className="section socials" id="socials" aria-labelledby="socials-title">
-        <div className="social-heading">
+        <div className="section-heading">
           <h2 id="socials-title">Мы в сети</h2>
           <p>
-            {typograph(
-              "Больше маршрутов, скидок и поводов сорваться в поездку — в наших социальных сетях."
+            {typo(
+              "Больше маршрутов, скидок и поводов сорваться в поездку — в наших социальных сетях.",
             )}
           </p>
         </div>
-        <div className="social-list">
-          {socialLinks.map((social) => (
-            <a
-              className="social-link"
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              key={social.name}
-            >
-              <span className="social-mark" aria-hidden="true">
-                <img src={`${publicBase}${social.icon}`} alt="" />
-              </span>
-              <span className="social-copy">
-                <strong>{typograph(social.name)}</strong>
-                <small>{social.handle}</small>
-              </span>
-              <ExternalArrow />
-            </a>
+
+        <ul className="social-list">
+          {SOCIALS.map((social) => (
+            <li key={social.name}>
+              <a
+                className="social-link"
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="social-mark" aria-hidden="true">
+                  <img src={asset(social.icon)} alt="" />
+                </span>
+                <span className="social-copy">
+                  <strong>{social.name}</strong>
+                  <small>{social.handle}</small>
+                </span>
+                <Arrow />
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      <footer>
+      <footer className="site-footer">
         <a className="footer-brand" href="#top" aria-label="Горбилет — наверх">
           <img
-            src={`${publicBase}/brand/logo-full-white.svg`}
+            className="brand-logo"
+            src={asset("/brand/gorbilet-white.svg")}
             alt="Горбилет"
           />
+          <span>Travel</span>
         </a>
         <span>© 2026 / Горбилет / путешествия</span>
       </footer>

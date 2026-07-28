@@ -1,4 +1,28 @@
+/* ==========================================================================
+   Горбилет Travel
+
+   Что изменено против наложения текста:
+   1. Интерлиньяж заголовков поднят с .76–.8 до безопасных значений.
+      При прописном Druk Wide строки с line-height ниже .88 заезжают
+      друг на друга, а точки над «Ё» лезут в строку выше.
+   2. Подписи к фото больше не лежат absolute поверх картинок.
+   3. У всех ячеек сетки min-width: 0 — содержимое не распирает колонку
+      и не наезжает на соседнюю.
+   ========================================================================== */
+
+/* Druk Wide Cy App Medium. Если шрифт уже подключён в layout.tsx через
+   next/font/local, переменная оттуда перекроет эту — блок можно удалить. */
+@font-face {
+  font-family: "Druk Wide Cy";
+  src: url("/fonts/druk-wide-medium.woff2") format("woff2"),
+       url("/fonts/druk-wide-medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
+  --font-druk-wide: "Druk Wide Cy";
   --blue: #0069f8;
   --ink: #063c91;
   --paper: #f4f5f2;
@@ -6,10 +30,13 @@
   --gray: #839aba;
   --pale: #dce9ff;
   --sky: #84baff;
+
   --radius-section: 32px;
   --radius-card: 22px;
   --radius-small: 16px;
-  --line: 1.5px solid var(--ink);
+
+  --display: var(--font-druk-wide), Impact, "Arial Black", sans-serif;
+  --body: Arial, Helvetica, sans-serif;
 }
 
 * {
@@ -19,22 +46,24 @@
 html {
   scroll-behavior: smooth;
   background: var(--paper);
+  scroll-padding-top: 96px;
 }
 
 body {
   margin: 0;
-  overflow-x: hidden;
   color: var(--ink);
   background-color: var(--paper);
-  background-image: radial-gradient(rgba(6, 60, 145, 0.07) 0.7px, transparent 0.7px);
+  background-image: radial-gradient(#063c9112 0.7px, #0000 0.7px);
   background-size: 5px 5px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--body);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img {
@@ -43,40 +72,92 @@ img {
   max-width: 100%;
 }
 
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+figure {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Заголовки.
+   line-height подобран так, чтобы «Ё», «Й» и хвосты «Ц», «Щ» не сталкивались
+   со строкой выше. Плотность набора сохранена за счёт letter-spacing.
+   -------------------------------------------------------------------------- */
+
 h1,
 h2,
 h3,
 strong {
   max-width: 100%;
-  font-family: var(--font-druk-wide), Impact, Arial Black, sans-serif;
+  margin: 0;
+  font-family: var(--display);
   font-weight: 500;
-  hyphens: none;
-  overflow-wrap: normal;
+  text-transform: uppercase;
   text-wrap: balance;
+  overflow-wrap: normal;
   word-break: normal;
+  hyphens: none;
 }
 
-a {
-  -webkit-tap-highlight-color: transparent;
+/* пункты списков — полноценные ячейки сетки */
+.city-index > li,
+.offer-list > li,
+.social-list > li,
+.hero-collage > li,
+.agent-collage > li {
+  display: grid;
+  min-width: 0;
 }
+
+.eyebrow {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.16s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Каркас
+   -------------------------------------------------------------------------- */
 
 .site-shell {
   width: min(100%, 1280px);
   margin: 0 auto;
-  overflow: clip;
   background: var(--paper);
-  border-right: 1px solid rgba(6, 60, 145, 0.18);
-  border-left: 1px solid rgba(6, 60, 145, 0.18);
+  border-left: 1px solid #063c912e;
+  border-right: 1px solid #063c912e;
+  overflow: clip;
 }
 
 .site-nav {
-  position: relative;
   z-index: 20;
-  display: grid;
-  grid-template-columns: 1fr;
-  min-height: 68px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 18px;
+  justify-content: space-between;
+  gap: 12px 18px;
+  min-height: 68px;
   padding: 12px 16px;
   color: var(--white);
   background: var(--ink);
@@ -84,228 +165,123 @@ a {
   border-radius: 0 0 24px 24px;
 }
 
-.nav-brand {
-  display: block;
-  width: 132px;
-}
-
-.nav-logo {
-  height: auto;
-}
-
-.site-nav nav {
-  display: none;
+.nav-brand,
+.footer-brand {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 26px;
+  gap: 10px;
+  color: var(--white);
 }
 
-.site-nav nav a,
-.nav-cta {
-  font-size: 10px;
-  font-weight: 800;
+/* логотип задаёт высоту, ширина считается из пропорций 1480×254 */
+.brand-logo {
+  width: auto;
+  height: 20px;
+}
+
+.nav-brand span,
+.footer-brand span {
+  color: var(--sky);
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  /* оптическая подгонка: «TRAVEL» садится на базовую линию логотипа */
+  padding-top: 2px;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+
+.nav-links a {
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 800;
 }
 
-.site-nav nav a {
-  padding: 8px 0;
-  border-bottom: 2px solid transparent;
-}
-
-.site-nav nav a:hover {
+.nav-links a:hover {
   border-color: var(--blue);
 }
 
-.nav-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  color: var(--white);
-  background: var(--blue);
-  border-radius: 999px;
-  white-space: nowrap;
-}
+/* --------------------------------------------------------------------------
+   Приветствие
+   -------------------------------------------------------------------------- */
 
 .hero {
-  position: relative;
-  min-height: 760px;
   padding: 18px 14px 0;
-  overflow: hidden;
   background: var(--paper);
 }
 
-.hero-masthead,
-.section-kicker {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding-bottom: 8px;
+.hero-intro {
+  display: grid;
+  gap: 14px;
+  padding: 30px 0 26px;
   border-bottom: 1px solid var(--ink);
 }
 
-.micro-label,
-.section-kicker {
-  margin: 0;
-  font-size: 8px;
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.hero-title-wrap {
-  position: relative;
-  padding: 38px 0 28px;
-  isolation: isolate;
-}
-
-.hero-ghost {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  right: -8%;
-  color: var(--blue);
-  font-family: var(--font-druk-wide), Impact, sans-serif;
-  font-size: clamp(155px, 52vw, 410px);
-  font-weight: 500;
-  line-height: 0.66;
-  letter-spacing: -0.08em;
-  opacity: 0.84;
-  filter: blur(8px);
-  transform: scaleX(1.05);
-  user-select: none;
-}
-
-.hero h1 {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  margin: 0;
-  font-size: clamp(38px, 12vw, 166px);
-  line-height: 0.76;
+.hero-title {
+  font-size: clamp(36px, 10.5vw, 138px);
+  /* было .76 — строки налезали. .88 их развело, но «Ё» и «?» всё ещё
+     подходили вплотную к «КУДА», поэтому разводим до .98 */
+  line-height: 0.98;
   letter-spacing: -0.045em;
-  text-transform: uppercase;
+  /* запас сверху под точки над «Ё» */
+  padding-top: 0.04em;
 }
 
-.hero-editorial-grid {
-  position: relative;
-  z-index: 3;
+.hero-grid {
   display: grid;
   gap: 12px;
-  margin: 6px 0 0;
+  margin-top: 14px;
+  padding-bottom: 14px;
 }
 
-.hero-visual {
-  position: relative;
-  min-height: 280px;
-  margin: 0;
-  overflow: hidden;
-  background: var(--ink);
-  border-radius: var(--radius-card);
-}
-
-.hero-visual img {
-  height: 100%;
-  min-height: 280px;
-  object-fit: cover;
-  object-position: center 42%;
-  filter: none;
-}
-
-.hero-photo-collage {
+.hero-collage {
   display: grid;
-  min-height: 610px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: 240px 170px 170px;
   gap: 10px;
   padding: 10px;
   background: var(--pale);
+  border-radius: var(--radius-card);
 }
 
 .hero-photo {
-  min-width: 0;
-  min-height: 0;
-  margin: 0;
-  overflow: hidden;
+  background: var(--ink);
   border-radius: var(--radius-small);
+  overflow: hidden;
 }
 
 .hero-photo img {
-  width: 100%;
-  height: 100%;
-  min-height: 0;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
 }
 
-.hero-photo-main,
-.hero-photo-river {
-  grid-column: 1 / -1;
-}
-
-.hero-photo-main img {
-  object-position: center 68%;
-}
-
-.hero-photo-river img {
-  object-position: center 63%;
-}
-
-.hero-photo-costumes img {
-  object-position: center 44%;
-}
-
-.hero-photo-deer img {
-  object-position: center 42%;
-}
-
-.hero-visual::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-  background: transparent;
-  pointer-events: none;
-  display: none;
-}
-
-.hero-visual figcaption,
-.agent-shot figcaption {
-  position: absolute;
-  z-index: 2;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 7px 9px;
-  color: var(--white);
-  background: var(--ink);
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .hero-story {
-  position: relative;
+  display: grid;
+  gap: 18px;
+  justify-items: start;
   padding: 22px 16px 24px;
   background: var(--white);
   border-radius: var(--radius-card);
 }
 
 .hero-story h2 {
-  margin: 0;
-  font-size: clamp(28px, 8vw, 34px);
-  line-height: 0.9;
+  /* «НЕ СИДИТСЯ» связано неразрывным пробелом в одно слово из 10 знаков,
+     поэтому кегль подобран так, чтобы оно влезало в узкую колонку */
+  font-size: clamp(21px, 2.9vw, 28px);
+  /* было .9 — три строки заголовка сталкивались */
+  line-height: 0.95;
   letter-spacing: -0.03em;
-  text-transform: uppercase;
 }
 
-.hero-story > p {
+.hero-story p {
   max-width: 500px;
-  margin: 20px 0;
   font-size: 14px;
   font-weight: 600;
   line-height: 1.38;
@@ -313,20 +289,20 @@ a {
 
 .editorial-link {
   display: inline-flex;
-  min-height: 45px;
   align-items: center;
   justify-content: space-between;
   gap: 22px;
-  padding: 11px 13px;
+  min-height: 45px;
+  padding: 11px 18px;
   color: var(--white);
   background: var(--blue);
   border-radius: 999px;
-  font-family: var(--font-druk-wide), Impact, sans-serif;
+  font-family: var(--display);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  transition: color 160ms ease, background 160ms ease;
+  transition: color 0.16s, background 0.16s;
 }
 
 .editorial-link:hover {
@@ -334,109 +310,54 @@ a {
   background: var(--ink);
 }
 
-.city-ticker {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin: 12px 0 0;
-  background: transparent;
+.editorial-link:hover .arrow {
+  transform: translate(2px, -2px);
 }
 
-.city-ticker span {
-  min-width: 0;
-  padding: 10px 8px;
-  overflow: hidden;
-  background: var(--pale);
-  border-radius: 999px;
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
+/* --------------------------------------------------------------------------
+   Секции
+   -------------------------------------------------------------------------- */
 
 .section {
-  position: relative;
+  display: grid;
+  gap: 28px;
   margin: 12px;
   padding: 54px 14px;
-  overflow: hidden;
   border-radius: var(--radius-section);
+  overflow: hidden;
 }
 
-.section-kicker {
-  margin-bottom: 34px;
+.section-heading {
+  display: grid;
+  gap: 22px;
 }
 
-.section-kicker span:first-child {
-  color: var(--blue);
-}
-
-.section-kicker-light {
-  border-color: var(--white);
-}
-
-.section-kicker-light span:first-child {
-  color: var(--blue);
-}
-
-.cities-heading {
-  position: relative;
-  min-height: 0;
-  padding-top: 0;
-  isolation: isolate;
-}
-
-.section-ghost,
-.social-ghost {
-  position: absolute;
-  z-index: -1;
-  color: var(--blue);
-  font-family: var(--font-druk-wide), Impact, sans-serif;
-  font-weight: 500;
-  text-transform: uppercase;
-  opacity: 0.75;
-  filter: blur(7px);
-  user-select: none;
-}
-
-.section-ghost {
-  top: 5px;
-  right: -10%;
-  font-size: clamp(80px, 28vw, 290px);
-  line-height: 0.8;
-}
-
-.cities-heading h2,
-.offers-heading h2,
-.agents-heading h2,
-.social-heading h2 {
-  position: relative;
-  z-index: 2;
-  margin: 0;
-  font-size: clamp(38px, 11.7vw, 150px);
-  line-height: 0.8;
+.section-heading h2 {
+  font-size: clamp(26px, 8vw, 96px);
+  /* было .8 — «СЧАСТЛИВЫЕ ВЫ В ПОЕЗДКАХ» наезжало само на себя */
+  line-height: 0.9;
   letter-spacing: -0.045em;
-  text-transform: uppercase;
+  padding-top: 0.03em;
 }
 
-.cities-heading p,
-.offers-heading p,
-.agents-heading p,
-.social-heading p {
-  position: relative;
-  z-index: 2;
+.section-heading p {
   max-width: 460px;
-  margin: 25px 0 0;
   font-size: 14px;
   font-weight: 700;
   line-height: 1.4;
 }
 
+/* --------------------------------------------------------------------------
+   Города
+   -------------------------------------------------------------------------- */
+
+.cities {
+  background: var(--paper);
+}
+
 .city-index {
   display: grid;
   gap: 10px;
-  margin-top: 28px;
 }
 
 .city-row {
@@ -447,9 +368,21 @@ a {
   min-height: 58px;
   padding: 12px 14px;
   background: var(--white);
-  border: 1px solid rgba(6, 60, 145, 0.18);
+  border: 1px solid #063c912e;
   border-radius: var(--radius-small);
-  transition: color 150ms ease, background 150ms ease;
+  transition: color 0.15s, background 0.15s;
+}
+
+.city-row strong {
+  min-width: 0;
+  /* «Калининград» и «Нижний Новгород» — самые длинные, кегль под них */
+  font-size: clamp(15px, 4.4vw, 30px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.city-row .arrow {
+  font-size: 18px;
 }
 
 .city-row:hover {
@@ -457,74 +390,47 @@ a {
   background: var(--blue);
 }
 
-.city-row > span {
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+.cities .editorial-link {
+  justify-self: start;
 }
 
-.city-row > span:last-child {
-  font-size: 18px;
-}
-
-.city-row strong {
-  min-width: 0;
-  font-size: clamp(17px, 5.3vw, 34px);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-
-.city-all-link {
-  margin-top: 22px;
-}
+/* --------------------------------------------------------------------------
+   Топ 5
+   -------------------------------------------------------------------------- */
 
 .offers {
   color: var(--white);
   background: var(--ink);
-  border-color: var(--blue);
 }
 
-.offers-heading {
-  display: grid;
-  gap: 22px;
-  margin-bottom: 40px;
-}
-
-.offers-heading h2 {
+.offers .section-heading h2 {
   color: var(--blue);
-}
-
-.offers-heading p {
-  margin: 0;
 }
 
 .offer-list {
   display: grid;
   gap: 12px;
-  background: transparent;
 }
 
 .offer-card {
-  container-type: inline-size;
   display: grid;
-  min-width: 0;
+  grid-template-rows: auto 1fr auto;
+  gap: 14px;
   min-height: 255px;
-  grid-template-rows: 1fr auto;
-  gap: 18px;
   padding: 17px 15px;
   color: var(--ink);
   background: var(--paper);
   border-radius: var(--radius-card);
-  transition: color 160ms ease, background 160ms ease;
+  transition: color 0.16s, background 0.16s;
+  container-type: inline-size;
 }
 
-.offer-card:first-child {
+.offer-list > li:first-child .offer-card {
   color: var(--white);
   background: var(--blue);
 }
 
-.offer-card:nth-child(even) {
+.offer-list > li:nth-child(even) .offer-card {
   background: var(--pale);
 }
 
@@ -533,227 +439,113 @@ a {
   background: var(--blue);
 }
 
-.offer-meta,
+.offer-number,
+.offer-city {
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.offer-copy {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+  min-width: 0;
+}
+
+.offer-copy h3 {
+  width: 100%;
+  font-size: clamp(16px, 6.6cqi, 40px);
+  /* было .92 — длинные названия в три строки слипались */
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
 .offer-action {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  font-size: 8px;
-  font-weight: 800;
+  padding-top: 11px;
+  border-top: 1px solid;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-}
-
-.offer-copy {
-  min-width: 0;
-  align-self: center;
-}
-
-.offer-copy p {
-  margin: 0 0 12px;
   font-size: 8px;
   font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
-.offer-copy h3 {
-  width: 100%;
-  margin: 0;
-  font-size: clamp(19px, 6.8cqi, 42px);
-  line-height: 0.92;
-  letter-spacing: -0.025em;
-  text-transform: uppercase;
-}
-
-.offer-action {
-  padding-top: 11px;
-  border-top: 1px solid currentColor;
-}
+/* --------------------------------------------------------------------------
+   Ваши поездки
+   Раньше подпись лежала блоком внутри коллажа и налезала на фотографии.
+   Теперь текст живёт в заголовке секции, коллаж — только картинки.
+   -------------------------------------------------------------------------- */
 
 .agents {
   background: var(--paper);
 }
 
-.agents-heading {
-  display: grid;
-  gap: 20px;
-}
-
-.agents-heading h2 {
-  color: var(--ink);
-}
-
-.agents-heading h2::after {
-  content: none;
-}
-
-.agents-heading p {
-  margin: 0;
+/* «ВЫ В ПОЕЗДКАХ» связано неразрывными пробелами в один блок из 13 знаков,
+   поэтому у этого заголовка свой, более мелкий кегль */
+.agents .section-heading h2 {
+  font-size: clamp(22px, 6vw, 42px);
 }
 
 .agent-collage {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: 180px;
   gap: 12px;
-  margin-top: 38px;
-  background: transparent;
 }
 
 .agent-shot {
-  position: relative;
-  min-width: 0;
-  min-height: 0;
-  margin: 0;
-  overflow: hidden;
   background: var(--ink);
   border-radius: var(--radius-card);
+  overflow: hidden;
 }
 
 .agent-shot img {
-  height: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
-  filter: none;
-  transition: filter 180ms ease, transform 250ms ease;
+  transition: transform 0.25s;
 }
 
 .agent-shot:hover img {
-  filter: none;
   transform: scale(1.025);
 }
 
-.agent-shot-a {
-  grid-column: 1 / -1;
-  grid-row: span 2;
-}
-
-.agent-shot-a img {
-  object-position: center 38%;
-}
-
-.agent-shot-b {
-  grid-row: span 1;
-}
-
-.agent-shot-b img {
-  object-position: center 61%;
-}
-
-.agent-shot-c img {
-  object-position: center 37%;
-}
-
-.agent-shot-d {
-  grid-row: span 1;
-}
-
-.agent-shot-d img {
-  object-position: 42% center;
-}
-
-.agent-shot-e img {
-  object-position: center;
-}
-
-.agent-shot-f img {
-  object-position: center 38%;
-}
-
-.agent-shot-g img {
-  object-position: center 36%;
-}
-
-.agent-shot-h img {
-  object-position: center 42%;
-}
-
-.collage-copy {
-  position: relative;
-  display: flex;
-  grid-column: 1 / -1;
-  min-width: 0;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 15px;
-  overflow: hidden;
-  color: var(--white);
-  background: var(--blue);
-  border-radius: var(--radius-card);
-}
-
-.collage-copy strong {
-  position: relative;
-  z-index: 2;
-  font-size: clamp(16px, 5vw, 28px);
-  line-height: 0.95;
-  text-transform: uppercase;
-}
-
-.collage-copy p {
-  position: relative;
-  z-index: 2;
-  margin: 12px 0 0;
-  font-size: 9px;
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-.collage-cross {
-  position: absolute;
-  top: -34px;
-  right: -8px;
-  color: var(--blue);
-  font-size: 140px;
-  line-height: 1;
-  transform: rotate(11deg);
-}
+/* --------------------------------------------------------------------------
+   Соцсети
+   -------------------------------------------------------------------------- */
 
 .socials {
   color: var(--white);
   background: var(--ink);
-  border-color: var(--blue);
-  isolation: isolate;
 }
 
-.social-ghost {
-  z-index: -1;
-  top: 88px;
-  right: -18%;
-  font-size: clamp(105px, 35vw, 380px);
-  line-height: 0.75;
-}
-
-.social-heading h2 {
-  color: var(--white);
-}
-
-.social-heading p {
+.socials .section-heading h2,
+.socials .section-heading p {
   color: var(--white);
 }
 
 .social-list {
   display: grid;
   gap: 10px;
-  margin-top: 38px;
-  background: transparent;
 }
 
 .social-link {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr) 24px;
-  min-height: 78px;
   align-items: center;
   gap: 10px;
+  min-height: 78px;
   padding: 10px 12px;
   color: var(--ink);
   background: var(--paper);
   border-radius: var(--radius-small);
-  transition: color 160ms ease, background 160ms ease;
+  transition: color 0.16s, background 0.16s;
 }
 
-.social-link:nth-child(even) {
+.social-list > li:nth-child(even) .social-link {
   background: var(--pale);
 }
 
@@ -762,19 +554,13 @@ a {
   background: var(--blue);
 }
 
-.social-index {
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-}
-
 .social-mark {
   display: grid;
+  place-items: center;
   width: 40px;
   height: 40px;
-  place-items: center;
-  overflow: hidden;
   border-radius: 12px;
+  overflow: hidden;
 }
 
 .social-mark img {
@@ -785,31 +571,34 @@ a {
 
 .social-copy {
   display: flex;
-  min-width: 0;
   flex-direction: column;
   gap: 3px;
+  min-width: 0;
 }
 
 .social-copy strong {
-  overflow: hidden;
   font-size: clamp(14px, 4.5vw, 28px);
-  line-height: 1;
+  line-height: 1.05;
   text-overflow: ellipsis;
-  text-transform: uppercase;
+  overflow: hidden;
 }
 
 .social-copy small {
-  overflow: hidden;
   font-size: 9px;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
-.social-link > span:last-child {
+.social-link .arrow {
   font-size: 19px;
 }
 
-footer {
+/* --------------------------------------------------------------------------
+   Подвал
+   -------------------------------------------------------------------------- */
+
+.site-footer {
   display: grid;
   gap: 12px;
   padding: 30px 16px;
@@ -819,94 +608,40 @@ footer {
   border-radius: var(--radius-section) var(--radius-section) 0 0;
 }
 
-.footer-brand {
-  display: block;
-  width: min(100%, 220px);
+.footer-brand .brand-logo {
+  height: 22px;
 }
 
-footer p {
-  margin: 0;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-footer > span {
-  font-size: 8px;
-  font-weight: 800;
+.site-footer > span {
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  font-size: 8px;
+  font-weight: 800;
 }
 
-a:focus-visible {
-  outline: 3px solid var(--blue);
-  outline-offset: 4px;
-}
+/* --------------------------------------------------------------------------
+   560px
+   -------------------------------------------------------------------------- */
 
 @media (min-width: 560px) {
   .site-nav {
-    padding-right: 22px;
-    padding-left: 22px;
+    padding-inline: 22px;
   }
 
-  .nav-brand {
-    width: 156px;
+  .nav-brand .brand-logo {
+    height: 24px;
+  }
+
+  .nav-brand span {
+    font-size: 14px;
   }
 
   .hero {
-    min-height: auto;
     padding: 22px 22px 0;
   }
 
-  .hero-title-wrap {
-    padding: 50px 0 34px;
-  }
-
-  .hero-editorial-grid,
-  .city-ticker {
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .hero-visual {
-    min-height: 420px;
-  }
-
-  .hero-visual img {
-    min-height: 420px;
-  }
-
-  .hero-photo-collage {
-    min-height: 520px;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
-    grid-template-rows: repeat(3, minmax(0, 1fr));
-  }
-
-  .hero-photo-collage img {
-    min-height: 0;
-  }
-
-  .hero-photo-main {
-    grid-column: 1;
-    grid-row: 1 / 4;
-  }
-
-  .hero-photo-river {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .hero-photo-costumes {
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  .hero-photo-deer {
-    grid-column: 2;
-    grid-row: 3;
-  }
-
-  .city-ticker {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .hero-intro {
+    padding: 42px 0 32px;
   }
 
   .section {
@@ -918,21 +653,13 @@ a:focus-visible {
     min-height: 72px;
   }
 
-  .offer-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .offer-card {
     min-height: 300px;
     padding: 20px;
   }
 
-  .offer-card:last-child {
-    grid-column: 1 / -1;
-  }
-
   .agent-collage {
-    grid-auto-rows: 230px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .social-link {
@@ -947,108 +674,103 @@ a:focus-visible {
   }
 }
 
+/* --------------------------------------------------------------------------
+   700px — карточки маршрутов в две колонки
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 700px) {
+  .offer-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .offer-list > li:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   860px
+   -------------------------------------------------------------------------- */
+
 @media (min-width: 860px) {
   .site-nav {
     position: sticky;
     top: 0;
-    grid-template-columns: 180px 1fr auto;
     min-height: 78px;
-  }
-
-  .site-nav nav {
-    display: flex;
   }
 
   .hero {
     padding: 25px 30px 0;
   }
 
-  .hero-title-wrap {
-    padding-top: 32px;
-  }
-
-  .hero-editorial-grid {
-    grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.75fr);
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .hero-visual,
-  .hero-visual img {
-    min-height: 510px;
-  }
-
-  .hero-photo-collage img {
-    min-height: 0;
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.55fr) minmax(330px, 0.75fr);
   }
 
   .hero-story {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    align-content: end;
     padding: 34px 30px;
   }
 
-  .city-ticker {
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .city-ticker span {
-    padding: 12px 8px;
-    border-bottom: 0;
-  }
-
   .section {
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+    column-gap: 42px;
     padding: 92px 44px;
   }
 
-  .cities-heading,
-  .offers-heading,
-  .agents-heading,
-  .social-heading {
-    display: grid;
+  .section-heading {
+    grid-column: 1 / -1;
     grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
-    gap: 42px;
     align-items: end;
+    gap: 42px;
   }
 
-  .cities-heading {
-    min-height: 310px;
+  .section-heading p {
+    margin-bottom: 10px;
   }
 
-  .cities-heading p,
-  .offers-heading p,
-  .agents-heading p,
-  .social-heading p {
-    margin: 0 0 10px;
+  .city-index,
+  .offer-list,
+  .agent-collage,
+  .social-list {
+    grid-column: 1 / -1;
   }
 
   .city-index {
-    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .city-all-link {
-    margin-left: calc(50% + 2px);
+  .cities .editorial-link {
+    grid-column: 1 / -1;
+    justify-self: start;
   }
 
-  .offers-heading h2,
-  .social-heading h2 {
-    font-size: clamp(88px, 11.5vw, 150px);
+  /* с 860px города идут в две колонки — кегль пересчитан под узкую строку */
+  .city-row strong {
+    font-size: clamp(18px, 2.5vw, 32px);
   }
 
-  .cities-heading h2 {
-    font-size: clamp(72px, 8vw, 112px);
+  .cities .section-heading h2 {
+    font-size: clamp(48px, 5.4vw, 76px);
   }
 
-  .agents-heading h2 {
-    font-size: clamp(68px, 7vw, 98px);
+  /* «Счастливые вы в поездках» — четыре слова.
+     Кегль мельче, колонка шире: фраза ложится в две строки,
+     а не по одному слову в ряд. */
+  .agents .section-heading {
+    grid-template-columns: minmax(0, 1.75fr) minmax(260px, 0.45fr);
   }
 
-  .offer-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .agents .section-heading h2 {
+    font-size: clamp(26px, 2.9vw, 42px);
+  }
+
+  .offers .section-heading h2 {
+    font-size: clamp(72px, 9vw, 126px);
+  }
+
+  .socials .section-heading h2 {
+    font-size: clamp(52px, 6vw, 84px);
   }
 
   .offer-card {
@@ -1057,55 +779,7 @@ a:focus-visible {
   }
 
   .agent-collage {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(3, 260px);
-    grid-auto-rows: auto;
-  }
-
-  .agent-shot-a {
-    grid-column: 1 / 5;
-    grid-row: 1 / 3;
-  }
-
-  .agent-shot-b {
-    grid-column: 5 / 8;
-    grid-row: 1 / 2;
-  }
-
-  .collage-copy {
-    grid-column: 8 / 13;
-    grid-row: 1 / 2;
-    padding: 28px;
-  }
-
-  .agent-shot-c {
-    grid-column: 5 / 8;
-    grid-row: 2 / 3;
-  }
-
-  .agent-shot-d {
-    grid-column: 8 / 11;
-    grid-row: 2 / 3;
-  }
-
-  .agent-shot-e {
-    grid-column: 11 / 13;
-    grid-row: 2 / 3;
-  }
-
-  .agent-shot-f {
-    grid-column: 1 / 5;
-    grid-row: 3 / 4;
-  }
-
-  .agent-shot-g {
-    grid-column: 5 / 9;
-    grid-row: 3 / 4;
-  }
-
-  .agent-shot-h {
-    grid-column: 9 / 13;
-    grid-row: 3 / 4;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .social-list {
@@ -1113,93 +787,60 @@ a:focus-visible {
   }
 
   .social-link {
-    min-height: 150px;
     grid-template-columns: 52px minmax(0, 1fr) 22px;
     align-content: center;
+    min-height: 150px;
   }
 
   .social-copy strong {
-    font-size: clamp(15px, 1.8vw, 24px);
+    font-size: clamp(12px, 1.45vw, 22px);
   }
 
-  footer {
+  .site-footer {
     grid-template-columns: 1fr auto;
     align-items: end;
     padding: 42px 44px;
   }
-
-  footer p {
-    margin-top: 6px;
-  }
-
-  footer > span {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-  }
 }
 
+/* --------------------------------------------------------------------------
+   1120px
+   -------------------------------------------------------------------------- */
+
 @media (min-width: 1120px) {
+  .hero {
+    padding-inline: 42px;
+  }
+
   .section {
     padding: 110px 62px;
   }
-
-  .hero {
-    padding-right: 42px;
-    padding-left: 42px;
-  }
-
-  .hero-editorial-grid,
-  .city-ticker {
-    margin-right: 0;
-    margin-left: 0;
-  }
 }
 
+/* --------------------------------------------------------------------------
+   Узкие экраны
+   -------------------------------------------------------------------------- */
+
 @media (max-width: 380px) {
-  .nav-cta {
-    padding: 10px;
-    font-size: 8px;
+  .nav-brand .brand-logo {
+    height: 17px;
   }
 
-  .nav-brand {
-    width: 116px;
+  .nav-brand span {
+    font-size: 11px;
   }
 
-  .hero h1 {
+  .hero-title,
+  .section-heading h2 {
     font-size: 36px;
   }
 
-  .cities-heading h2,
-  .offers-heading h2,
-  .agents-heading h2,
-  .social-heading h2 {
-    font-size: 36px;
-  }
-
-  .agents-heading h2 {
-    font-size: 33px;
-  }
-
-  .collage-copy strong {
-    font-size: 10px;
+  .agents .section-heading h2 {
+    font-size: 24px;
   }
 
   .offer-copy h3 {
     font-size: 18px;
-  }
-}
-
-@media (max-width: 559px) {
-  .hero h1,
-  .cities-heading h2,
-  .offers-heading h2,
-  .agents-heading h2,
-  .social-heading h2,
-  .hero-story h2,
-  .offer-copy h3,
-  .collage-copy strong,
-  .social-copy strong {
-    line-height: 0.92;
   }
 }
 
