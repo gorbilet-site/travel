@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   description:
     "Города, экскурсии и идеи для поездок от команды Горбилет Travel.",
   icons: {
-    icon: `${basePath}/images/deer.jpg`,
-    shortcut: `${basePath}/images/deer.jpg`,
+    icon: `${basePath}/images/hero-church.webp`,
+    shortcut: `${basePath}/images/hero-church.webp`,
   },
   openGraph: {
     type: "website",

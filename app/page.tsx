@@ -1,8 +1,8 @@
 const publicBase = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const cities = [
-  { name: "Петербург", href: "https://gorbilet.ru/go/dRaj6P" },
   { name: "Москва", href: "https://gorbilet.ru/go/OH4NtB" },
+  { name: "Петербург", href: "https://gorbilet.ru/go/dRaj6P" },
   { name: "Нижний Новгород", href: "https://gorbilet.ru/go/vNHwYL" },
   { name: "Калининград", href: "https://gorbilet.ru/go/YghnGq" },
   { name: "Казань", href: "https://gorbilet.ru/go/SJ1JYU" },
@@ -40,10 +40,10 @@ const offers = [
 
 const socialLinks = [
   {
-    name: "Instagram",
+    name: "Telegram",
     handle: "@gorbilet_travel",
-    href: "https://www.instagram.com/gorbilet_travel?igsh=ZzYzeGY5bDNhZmFq",
-    icon: "/social/instagram.svg",
+    href: "https://t.me/gorbilet_travel",
+    icon: "/social/telegram.svg",
   },
   {
     name: "MAX",
@@ -90,17 +90,9 @@ export default function Home() {
         <nav aria-label="Навигация по сайту">
           <a href="#cities">Города</a>
           <a href="#offers">Наш топ</a>
-          <a href="#agents">Агенты</a>
+          <a href="#agents">Ваши поездки</a>
           <a href="#socials">{typograph("Мы в сети")}</a>
         </nav>
-        <a
-          className="nav-cta"
-          href="https://gorbilet.ru/go/sdu4nZ"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Все города <ExternalArrow />
-        </a>
       </header>
 
       <section className="hero" aria-labelledby="hero-title">
@@ -111,18 +103,38 @@ export default function Home() {
         </div>
 
         <div className="hero-editorial-grid">
-          <figure className="hero-visual">
-            <img
-              src={`${publicBase}/images/deer.jpg`}
-              alt="Любопытный олень заглядывает в камеру во время путешествия"
-            />
-          </figure>
+          <div className="hero-visual hero-photo-collage" aria-label="Впечатления из путешествий">
+            <figure className="hero-photo hero-photo-main">
+              <img
+                src={`${publicBase}/images/hero-church.webp`}
+                alt="Деревянная церковь среди зелёного леса"
+              />
+            </figure>
+            <figure className="hero-photo hero-photo-river">
+              <img
+                src={`${publicBase}/images/hero-river.webp`}
+                alt="Городской пейзаж с храмами на берегу реки"
+              />
+            </figure>
+            <figure className="hero-photo hero-photo-costumes">
+              <img
+                src={`${publicBase}/images/hero-costumes.webp`}
+                alt="Народные костюмы в музейной экспозиции"
+              />
+            </figure>
+            <figure className="hero-photo hero-photo-deer">
+              <img
+                src={`${publicBase}/images/hero-deer.webp`}
+                alt="Олень тянется за угощением в лесном парке"
+              />
+            </figure>
+          </div>
 
           <div className="hero-story">
             <h2>{typograph("Идеи для тех, кому не сидится")}</h2>
             <p>
               {typograph(
-                "Выбирайте город, ловите впечатления и сохраняйте планы на следующую поездку. Мы уже проверили маршруты — вам остаётся решить, куда ехать."
+                "Выбирайте город, ловите впечатления и сохраняйте планы на следующую поездку. Мы собрали интересные варианты — вам остаётся решить, куда ехать."
               )}
             </p>
             <a className="editorial-link" href="#offers">
@@ -131,19 +143,12 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="city-ticker" aria-label="Основные города">
-          {cities.map((city) => (
-            <span key={city.name}>
-              {typograph(city.name)}
-            </span>
-          ))}
-        </div>
       </section>
 
       <section className="section cities" id="cities" aria-labelledby="cities-title">
         <div className="cities-heading">
           <h2 id="cities-title">7 городов</h2>
-          <p>{typograph("От большой столицы до маленького города на один идеальный день")}</p>
+          <p>{typograph("От Москвы до камерного Выборга — выбирайте город для следующей поездки")}</p>
         </div>
 
         <div className="city-index">
@@ -168,14 +173,14 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Увидеть весь список <ExternalArrow />
+          Все города <ExternalArrow />
         </a>
       </section>
 
       <section className="section offers" id="offers" aria-labelledby="offers-title">
         <div className="offers-heading">
           <h2 id="offers-title">Топ 5</h2>
-          <p>{typograph("Пять маршрутов, ради которых стоит открыть календарь прямо сейчас")}</p>
+          <p>{typograph("Пять маршрутов, чтобы запланировать поездку прямо сейчас")}</p>
         </div>
 
         <div className="offer-list">
@@ -201,10 +206,10 @@ export default function Home() {
 
       <section className="section agents" id="agents" aria-labelledby="agents-title">
         <div className="agents-heading">
-          <h2 id="agents-title">{typograph("Да, это работа")}</h2>
+          <h2 id="agents-title">{typograph("Счастливые вы в поездках")}</h2>
           <p>
             {typograph(
-              "Сначала едем сами. Потом честно рассказываем, куда точно стоит. Вы — в путешествии. Мы — рядом."
+              "Смотрите, как прошли поездки у тех, кто решился. Следующая счастливая история может быть вашей."
             )}
           </p>
         </div>
@@ -213,29 +218,29 @@ export default function Home() {
           <figure className="agent-shot agent-shot-a">
             <img
               src={`${publicBase}/images/agent-forest.jpg`}
-              alt="Участница команды Горбилет Travel в оленьем парке"
+              alt="Туристка во время поездки в оленьем парке"
             />
           </figure>
           <figure className="agent-shot agent-shot-b">
             <img
               src={`${publicBase}/images/agent-heic.jpg`}
-              alt="Участница команды Горбилет Travel на смотровой площадке у моря"
+              alt="Туристка на смотровой площадке у моря"
             />
           </figure>
           <div className="collage-copy">
-            <strong>{typograph("Маршрут сначала проживаем")}</strong>
-            <p>{typograph("И только потом добавляем в подборку")}</p>
+            <strong>{typograph("Вот какие счастливые вы в поездках")}</strong>
+            <p>{typograph("Истории тех, кто уже решился")}</p>
           </div>
           <figure className="agent-shot agent-shot-c">
             <img
               src={`${publicBase}/images/agent-boat-selfie.png`}
-              alt="Участница команды Горбилет Travel на теплоходе"
+              alt="Туристка во время прогулки на теплоходе"
             />
           </figure>
           <figure className="agent-shot agent-shot-d">
             <img
               src={`${publicBase}/images/agent-boat-pink.jpg`}
-              alt="Путешествие команды Горбилет Travel на теплоходе"
+              alt="Туристка отдыхает во время прогулки по воде"
             />
           </figure>
           <figure className="agent-shot agent-shot-e">
