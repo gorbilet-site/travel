@@ -179,17 +179,6 @@ strong {
   height: 20px;
 }
 
-.nav-brand span,
-.footer-brand span {
-  color: var(--sky);
-  font-family: var(--display);
-  font-size: 13px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  /* оптическая подгонка: «TRAVEL» садится на базовую линию логотипа */
-  padding-top: 2px;
-}
-
 .nav-links {
   display: flex;
   flex-wrap: wrap;
@@ -632,10 +621,6 @@ strong {
     height: 24px;
   }
 
-  .nav-brand span {
-    font-size: 14px;
-  }
-
   .hero {
     padding: 22px 22px 0;
   }
@@ -659,7 +644,7 @@ strong {
   }
 
   .agent-collage {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .social-link {
@@ -779,7 +764,8 @@ strong {
   }
 
   .agent-collage {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.6vw, 20px);
   }
 
   .social-list {
@@ -824,10 +810,6 @@ strong {
 @media (max-width: 380px) {
   .nav-brand .brand-logo {
     height: 17px;
-  }
-
-  .nav-brand span {
-    font-size: 11px;
   }
 
   .hero-title,

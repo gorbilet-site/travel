@@ -15,20 +15,20 @@ const NAV = [
    описание остаётся в alt для читалок и поиска. */
 const HERO_PHOTOS = [
   {
-    src: "/images/hero-pastries.webp",
-    alt: "Витрина пекарни с плетёными булками и заварными палочками",
+    src: "/images/hero-gnome.webp",
+    alt: "Бронзовая фигурка на перилах моста, увешанных замочками влюблённых",
   },
   {
     src: "/images/hero-syrniki.webp",
     alt: "Сырники со сметаной и ягодным соусом в кафе народной кухни",
   },
   {
-    src: "/images/hero-spb-breakfast.webp",
-    alt: "Вареники, закуска с икрой и десерт на гастрономическом фестивале",
+    src: "/images/hero-chapel.webp",
+    alt: "Готическая капелла в парке, над деревьями радуга",
   },
   {
-    src: "/images/hero-sweets.webp",
-    alt: "Жестяные банки конфет «Москва» в кондитерском магазине",
+    src: "/images/hero-view.webp",
+    alt: "Кадр из поездки",
   },
 ];
 
@@ -70,27 +70,22 @@ const OFFERS = [
   },
 ];
 
+/* Только кадры с людьми: секция про путешественников, а не про пейзажи. */
 const AGENT_SHOTS = [
   { src: "/images/agent-forest.webp", alt: "Туристка во время поездки в оленьем парке" },
   { src: "/images/agent-heic.webp", alt: "Туристка на смотровой площадке у моря" },
   { src: "/images/agent-boat-selfie.webp", alt: "Туристка во время прогулки на теплоходе" },
-  { src: "/images/deer.webp", alt: "Пятнистый олень тянется к камере в лесном парке" },
-  { src: "/images/marzipan.webp", alt: "Марципан и местные сладости в путешествии" },
-  { src: "/images/traveler-family-selfie.webp", alt: "Мама с сыном улыбаются во время прогулки по реке" },
-  { src: "/images/traveler-boat-portrait.webp", alt: "Туристка на палубе теплохода" },
   { src: "/images/traveler-mother-daughter.webp", alt: "Мама с дочкой отдыхают на палубе теплохода" },
-  { src: "/images/hero-church.webp", alt: "Деревянная церковь среди зелёного леса" },
-  { src: "/images/hero-river.webp", alt: "Городской пейзаж с храмами на берегу реки" },
-  { src: "/images/hero-costumes.webp", alt: "Народные костюмы в музейной экспозиции" },
-  { src: "/images/hero-deer.webp", alt: "Олень тянется за угощением в лесном парке" },
+  { src: "/images/agent-trip.webp", alt: "Туристка в зелёном платье на смотровой площадке над лесом и морем" },
+  { src: "/images/agent-cliff.webp", alt: "Туристка на скалистом берегу над морем" },
 ];
 
 const SOCIALS = [
   {
-    name: "Instagram",
+    name: "Telegram",
     handle: "@gorbilet_travel",
-    href: "https://www.instagram.com/gorbilet_travel/",
-    icon: "/social/instagram.svg",
+    href: "https://t.me/gorbilet_travel",
+    icon: "/social/telegram.svg",
   },
   {
     name: "MAX",
@@ -124,7 +119,6 @@ export default function Page() {
             src={asset("/brand/gorbilet-white.svg")}
             alt="Горбилет"
           />
-          <span>Travel</span>
         </a>
         <nav className="nav-links" aria-label="Навигация по сайту">
           {NAV.map((item) => (
@@ -300,7 +294,6 @@ export default function Page() {
             src={asset("/brand/gorbilet-white.svg")}
             alt="Горбилет"
           />
-          <span>Travel</span>
         </a>
         <span>© 2026 / Горбилет / путешествия</span>
       </footer>
