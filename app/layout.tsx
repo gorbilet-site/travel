@@ -4,7 +4,6 @@ import "./globals.css";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-const socialImageUrl = `${siteUrl.replace(/\/$/, "")}/og.png`;
 
 const drukWide = localFont({
   src: "./fonts/druk-wide.ttf",
@@ -20,8 +19,8 @@ export const metadata: Metadata = {
   description:
     "Города, экскурсии и идеи для поездок от команды Горбилет Travel.",
   icons: {
-    icon: `${basePath}/images/hero-church.webp`,
-    shortcut: `${basePath}/images/hero-church.webp`,
+    icon: `${basePath}/images/hero-gnome.webp`,
+    shortcut: `${basePath}/images/hero-gnome.webp`,
   },
   openGraph: {
     type: "website",
@@ -29,20 +28,11 @@ export const metadata: Metadata = {
     siteName: "Travel",
     title: "Travel",
     description: "Города, экскурсии и идеи для вашего следующего путешествия.",
-    images: [
-      {
-        url: socialImageUrl,
-        width: 1734,
-        height: 906,
-        alt: "Горбилет Travel — куда махнём?",
-      },
-    ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Travel",
     description: "Города, экскурсии и идеи для вашего следующего путешествия.",
-    images: [socialImageUrl],
   },
 };
 
