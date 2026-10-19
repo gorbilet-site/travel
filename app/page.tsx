@@ -66,9 +66,6 @@ const money = (value: number) => `${new Intl.NumberFormat("ru-RU").format(value)
 function Arrow() {
   return <svg className="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg>;
 }
-function Compass() {
-  return <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="50" cy="50" r="45" strokeWidth="1.5" /><circle cx="50" cy="50" r="37" strokeDasharray="1 5" strokeWidth="2" /><path d="m64 24-6 34-22 18 6-34Z" strokeWidth="2" /><path d="m64 24-14 26-8-8Z" fill="currentColor" /><circle cx="50" cy="50" r="3" fill="currentColor" /><path d="M50 0v10m0 80v10M0 50h10m80 0h10" strokeWidth="2" /></svg>;
-}
 function ExperienceIcon({ kind }: { kind: string }) {
   const paths: Record<string, React.ReactNode> = {
     chocolate: <><rect x="16" y="8" width="32" height="48" rx="6" transform="rotate(12 32 32)" /><path d="m22 17 20 4m-22 6 20 4m-22 6 20 4m-22 6 20 4M34 14l-8 37" /></>,
@@ -88,9 +85,6 @@ export default function Page() {
         <a className="nav-brand" href="#top" aria-label="Горбилет — на главную">
           <img className="brand-logo" src={asset("/brand/gorbilet-white.svg")} alt="Горбилет" width="1480" height="254" />
         </a>
-        <nav className="nav-links" aria-label="Навигация по сайту">
-          <a href="#cities">Маршруты</a><a href="#offers">Топ 5</a><a href="#socials">Мы в сети</a>
-        </nav>
       </header>
 
       <section className="hero" aria-labelledby="hero-title">
@@ -99,10 +93,8 @@ export default function Page() {
             <p className="eyebrow">Города ближе. Впечатлений больше.</p>
             <h1 id="hero-title"><span>Ваш проводник</span><span>по впечатлениям</span></h1>
           </div>
-          <div className="hero-compass"><Compass /></div>
         </div>
         <div className="photo-album">
-          <svg className="album-route" viewBox="0 0 1200 440" preserveAspectRatio="none" fill="none" aria-hidden="true"><path d="M-40 260C100 30 220 510 410 280S720 20 850 260s280 160 390-80" stroke="currentColor" strokeWidth="2" strokeDasharray="8 10" /></svg>
           <ul className="hero-collage" aria-label="Кадры из наших поездок">
             {HERO_PHOTOS.map((photo, index) => (
               <li className={`hero-photo hero-photo-${index + 1}`} key={photo.src}>
@@ -110,7 +102,6 @@ export default function Page() {
               </li>
             ))}
           </ul>
-          <span className="album-note">Впечатления — с собой <Arrow /></span>
         </div>
         <div className="hero-story">
           <h2><span>Помогаем</span><span>{typo("не пропускать жизнь")}</span></h2>

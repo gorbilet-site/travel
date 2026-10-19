@@ -26,20 +26,14 @@ a:focus-visible { outline: 3px solid currentColor; outline-offset: 5px; }
 a:hover .arrow { transform: translate(2px, -2px); }
 .site-nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px 32px; border-radius: 24px; background: var(--blue); color: white; }
 .brand-logo { width: 182px; height: auto; }
-.nav-links { display: flex; gap: 32px; align-items: center; }
-.nav-links a { padding: 6px 0; font-weight: 700; font-size: 14px; border-bottom: 1px solid transparent; }
-.nav-links a:hover { border-color: currentColor; }
 
 /* A photographic travel album, with text outside the image frames. */
 .hero { padding: 66px 24px 0; }
-.hero-heading { display: grid; grid-template-columns: minmax(0, 1fr) 102px; gap: 20px; align-items: end; }
+.hero-heading { display: grid; grid-template-columns: minmax(0, 1fr); }
 .eyebrow { margin-bottom: 22px; font-size: 12px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
 .hero h1 { font-size: clamp(24px, 4.45vw, 64px); }
 .hero h1 span:last-child { color: var(--blue); }
-.hero-compass { color: var(--blue); transform: rotate(14deg); padding-bottom: 8px; }
-.hero-compass svg { display: block; width: 100%; }
 .photo-album { position: relative; margin-top: 36px; padding: 30px 14px 48px; }
-.album-route { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--blue); opacity: .45; pointer-events: none; }
 .hero-collage { position: relative; display: grid; grid-template-columns: 1fr 1.28fr 1fr 1fr; align-items: center; gap: 18px; }
 .hero-photo { min-width: 0; padding: 9px; background: white; border: 1px solid var(--line); border-radius: 24px; box-shadow: 0 14px 30px #063c9114; }
 .hero-photo img { width: 100%; height: auto; aspect-ratio: 3 / 4; border-radius: 16px; }
@@ -47,8 +41,6 @@ a:hover .arrow { transform: translate(2px, -2px); }
 .hero-photo-2 { z-index: 2; transform: rotate(3deg); }
 .hero-photo-3 { transform: rotate(-5deg) translateY(34px); }
 .hero-photo-4 { transform: rotate(6deg) translateY(-10px); }
-.album-note { position: relative; display: flex; align-items: center; justify-content: end; gap: 18px; margin-top: 40px; font-size: 13px; font-weight: 700; }
-.album-note .arrow { transform: rotate(-90deg); }
 .hero-story { display: grid; grid-template-columns: 1.15fr 1fr; gap: 60px; align-items: center; padding: 36px 0 64px; border-top: 1px solid var(--line); }
 .hero-story h2 { font-size: clamp(22px, 2.65vw, 38px); }
 .hero-story p { max-width: 470px; font-size: 17px; }
@@ -61,7 +53,6 @@ a:hover .arrow { transform: translate(2px, -2px); }
 /* Every stop is a link; the complete city list sits below the route. */
 .cities { background: var(--blue); color: white; }
 .route-map { position: relative; padding-top: 12px; }
-.route-map::before { content: ""; position: absolute; inset: 26px 24px 64px; border: 1px dashed #ffffff66; border-radius: 60px 120px 80px 40px; transform: rotate(-3deg); pointer-events: none; }
 .city-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; position: relative; }
 .city-index li { min-width: 0; }
 .city-stop { display: grid; grid-template-columns: 12px minmax(0, 1fr) 20px; gap: 13px; align-items: center; height: 100%; min-height: 86px; border: 1px solid #ffffff80; background: var(--blue); border-radius: 22px; padding: 20px; transition: background .2s, color .2s, transform .2s; }
@@ -121,7 +112,6 @@ a:hover .arrow { transform: translate(2px, -2px); }
 .back-top { font-weight: 700; padding: 10px; }
 
 @media (max-width: 1100px) {
-  .hero-heading { grid-template-columns: minmax(0, 1fr) 64px; }
   .hero-story { gap: 32px; }
   .section { padding: 48px 32px; }
   .offers { padding-inline: 8px; }
@@ -133,8 +123,6 @@ a:hover .arrow { transform: translate(2px, -2px); }
 }
 @media (max-width: 850px) {
   .hero { padding: 44px 8px 0; }
-  .hero-heading { grid-template-columns: 1fr; }
-  .hero-compass { display: none; }
   .hero h1 { font-size: 4.65vw; }
   .hero-story { grid-template-columns: 1fr; gap: 24px; }
   .hero-story h2 { font-size: 28px; }
@@ -158,8 +146,6 @@ a:hover .arrow { transform: translate(2px, -2px); }
   .site-shell { padding: 12px 14px 0; }
   .site-nav { flex-wrap: wrap; gap: 18px; padding: 22px; border-radius: 22px; }
   .site-nav .brand-logo { width: 150px; }
-  .nav-links { width: 100%; justify-content: space-between; gap: 10px; }
-  .nav-links a { font-size: 12px; }
   .hero { padding: 36px 4px 0; }
   .eyebrow { font-size: 9px; letter-spacing: .07em; margin-bottom: 18px; }
   .hero h1 { font-size: 5.05vw; line-height: 1.3; letter-spacing: -.04em; }
@@ -171,8 +157,6 @@ a:hover .arrow { transform: translate(2px, -2px); }
   .hero-photo-2 { transform: rotate(4deg); }
   .hero-photo-3 { transform: rotate(-4deg) translateY(8px); }
   .hero-photo-4 { transform: rotate(5deg) translateY(-2px); }
-  .album-note { font-size: 11px; margin-top: 30px; gap: 12px; }
-  .album-note .arrow { width: 17px; height: 17px; }
   .hero-story { padding: 28px 0 20px; gap: 20px; }
   .hero-story h2 { font-size: clamp(18px, 4.8vw, 28px); line-height: 1.35; }
   .hero-story p, .section-heading p, .offers-heading p { font-size: 15px; }
@@ -183,7 +167,6 @@ a:hover .arrow { transform: translate(2px, -2px); }
   .city-stop { min-height: 76px; padding: 16px; border-radius: 18px; }
   .city-stop strong { font-size: clamp(13px, 3.7vw, 18px); }
   .route-map { padding-top: 0; }
-  .route-map::before { inset: 10px 20px 50px; }
   .all-cities { width: 100%; justify-content: space-between; padding: 17px 22px; margin-top: 22px; }
   .offers { padding: 16px 4px 0; }
   .offers-heading { gap: 20px; margin-bottom: 28px; }
