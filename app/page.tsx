@@ -25,31 +25,31 @@ const HERO_PHOTOS = [
 // Old and new prices refer to the SAME ticket category.
 const OFFERS = [
   {
-    city: "Москва", kind: "chocolate", theme: "Попробовать новое",
+    city: "Москва", theme: "Попробовать новое",
     title: "Фабрика «Красный Октябрь»",
     description: "Экскурсия с шоколадным мастер-классом. Создайте свой десерт и заберите его с собой.",
     href: "https://gorbilet.ru/go/NQAdAH", oldPrice: 2500, price: 1500, discount: 40, priceLabel: "Билет на экскурсию",
   },
   {
-    city: "Петербург", kind: "bus", theme: "Влюбиться в город",
+    city: "Петербург", theme: "Влюбиться в город",
     title: "По главным местам Петербурга",
     description: "Автобусная экскурсия: знакомые силуэты, панорамы Невы и истории Северной столицы.",
     href: "https://gorbilet.ru/go/OWemZh", oldPrice: 1200, price: 590, discount: 50, priceLabel: "Билет на экскурсию",
   },
   {
-    city: "Нижний Новгород", kind: "route", theme: "Свернуть с привычного пути",
+    city: "Нижний Новгород", theme: "Свернуть с привычного пути",
     title: "Нижний и Печерский монастырь",
     description: "Обзорная экскурсия по городу с посещением монастыря и прогулкой по Рождественской улице.",
     href: "https://gorbilet.ru/go/o0uKCk", oldPrice: 1900, price: 1615, discount: 15, priceLabel: "Взрослый билет",
   },
   {
-    city: "Калининград", kind: "castle", theme: "Уехать за впечатлениями",
+    city: "Калининград", theme: "Уехать за впечатлениями",
     title: "Замок Шаакен и сыроварня",
     description: "Автобусная поездка к средневековому замку Шаакен и в сыроварню «Шаакендорф».",
     href: "https://gorbilet.ru/go/MIlPKt", oldPrice: 1500, price: 1200, discount: 20, priceLabel: "Билет на экскурсию",
   },
   {
-    city: "Казань", kind: "cup", theme: "Узнать город на вкус",
+    city: "Казань", theme: "Узнать город на вкус",
     title: "Вся Казань за один день",
     description: "Главные места города, Казанский кремль и чаепитие с дегустацией татарских сладостей.",
     href: "https://gorbilet.ru/go/bcrhdG", oldPrice: 2375, price: 1900, discount: 20, priceLabel: "Взрослый билет",
@@ -66,20 +66,42 @@ const money = (value: number) => `${new Intl.NumberFormat("ru-RU").format(value)
 function Arrow() {
   return <svg className="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg>;
 }
-function ExperienceIcon({ kind }: { kind: string }) {
-  const paths: Record<string, React.ReactNode> = {
-    chocolate: <><rect x="16" y="8" width="32" height="48" rx="6" transform="rotate(12 32 32)" /><path d="m22 17 20 4m-22 6 20 4m-22 6 20 4m-22 6 20 4M34 14l-8 37" /></>,
-    bus: <><rect x="10" y="12" width="44" height="38" rx="8" /><path d="M10 34h44M32 13v21M20 7h24M17 50v7m30-7v7M5 23v11m54-11v11" /><circle cx="20" cy="42" r="2" /><circle cx="44" cy="42" r="2" /></>,
-    route: <><path d="M13 15h27a10 10 0 0 1 0 20H24a10 10 0 0 0 0 20h24" strokeDasharray="4 5" /><circle cx="12" cy="15" r="6" /><path d="M50 27c-6 0-10 4-10 10 0 8 10 16 10 16s10-8 10-16c0-6-4-10-10-10Z" /><circle cx="50" cy="37" r="3" /></>,
-    castle: <><path d="M11 56V22h10v8h8V12h6v18h8v-8h10v34ZM7 22l9-12 9 12M39 22l9-12 9 12M26 12l6-8 6 8M26 56V43a6 6 0 0 1 12 0v13" /></>,
-    cup: <><path d="M10 27h34v12a17 17 0 0 1-34 0ZM44 29h6a8 8 0 0 1 0 16h-7M7 58h43M20 19c-8-7 7-9 0-16m12 16c-8-7 7-9 0-16" /></>,
-  };
-  return <svg className="experience-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[kind]}</svg>;
+const STAMP_R = 46;
+const STAMP_C = 2 * Math.PI * STAMP_R;
+const TILTS = [-12, 8, -6, 10, -9];
+
+function Stamp({ theme, discount, index }: { theme: string; discount: number; index: number }) {
+  const label = `${theme.toUpperCase()} • ГОРБИЛЕТ • `;
+  const fontSize = Math.min(11, STAMP_C / (label.length * 0.78));
+  const ring = `M60,${60 - STAMP_R} a${STAMP_R},${STAMP_R} 0 1,1 0,${STAMP_R * 2} a${STAMP_R},${STAMP_R} 0 1,1 0,-${STAMP_R * 2}`;
+  const id = `stamp-ring-${index}`;
+  return (
+    <svg className="stamp" viewBox="0 0 120 120" aria-hidden="true" style={{ "--tilt": `${TILTS[index % TILTS.length]}deg` } as React.CSSProperties}>
+      <g filter="url(#ink)">
+        <circle className="stamp-disk" cx="60" cy="60" r="58" />
+        <circle className="stamp-line" cx="60" cy="60" r="58" strokeWidth="1.6" />
+        <circle className="stamp-line" cx="60" cy="60" r="54.5" strokeWidth=".8" />
+        <circle className="stamp-line" cx="60" cy="60" r="36" strokeWidth="1" strokeDasharray="2.2 3.2" />
+        <path id={id} d={ring} fill="none" />
+        <text className="stamp-ring" style={{ fontSize: `${fontSize.toFixed(2)}px` }}>
+          <textPath href={`#${id}`} textLength={STAMP_C.toFixed(1)} lengthAdjust="spacing">{label}</textPath>
+        </text>
+        <text className="stamp-value" x="60" y="63" textAnchor="middle">−{discount}%</text>
+        <text className="stamp-caption" x="60" y="78" textAnchor="middle">скидка</text>
+      </g>
+    </svg>
+  );
 }
 
 export default function Page() {
   return (
     <main className="site-shell" id="top">
+      <svg className="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+        <filter id="ink" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.4" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
       <a className="skip-link" href="#cities">Перейти к маршрутам</a>
       <header className="site-nav">
         <a className="nav-brand" href="#top" aria-label="Горбилет — на главную">
@@ -90,7 +112,6 @@ export default function Page() {
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-heading">
           <div>
-            <p className="eyebrow">Города ближе. Впечатлений больше.</p>
             <h1 id="hero-title"><span>Ваш проводник</span><span>по впечатлениям</span></h1>
           </div>
         </div>
@@ -134,12 +155,13 @@ export default function Page() {
           <p>{typo("Запланировать поездку прямо сейчас — проще, чем кажется. Выберите свой повод.")}</p>
         </div>
         <ol className="offer-list">
-          {OFFERS.map((offer) => (
+          {OFFERS.map((offer, index) => (
             <li key={offer.href}>
               <a className="offer-ticket" href={offer.href} target="_blank" rel="noopener noreferrer">
                 <div className="ticket-main">
-                  <div className="ticket-top"><span className="offer-city">{offer.city}</span><span className="discount">−{offer.discount}%</span></div>
-                  <div className="ticket-mood"><ExperienceIcon kind={offer.kind} /><span>{typo(offer.theme)}</span></div>
+                  <Stamp theme={offer.theme} discount={offer.discount} index={index} />
+                  <span className="offer-city">{offer.city}</span>
+                  <span className="sr-only">{offer.theme}. Скидка {offer.discount}%.</span>
                   <h3>{typo(offer.title)}</h3>
                   <p>{typo(offer.description)}</p>
                 </div>
@@ -173,7 +195,7 @@ export default function Page() {
       </section>
       <footer className="site-footer">
         <a className="footer-brand" href="#top" aria-label="Горбилет — наверх"><img className="brand-logo" src={asset("/brand/gorbilet-white.svg")} alt="Горбилет" width="1480" height="254" /></a>
-        <span>© 2026 Горбилет</span><a className="back-top" href="#top">Наверх ↑</a>
+        <a className="back-top" href="#top">Наверх ↑</a>
       </footer>
     </main>
   );
