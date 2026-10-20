@@ -41,7 +41,7 @@ const OFFERS = [
   },
   {
     city: "Петербург",
-    photo: "/images/offer-petersburg-isaac.webp", photoAlt: "Исаакиевский собор с золотым куполом на фоне ясного синего неба", photoPosition: "50% 50%", photoFit: "contain",
+    photo: "/images/offer-petersburg-facade.webp", photoAlt: "Голубой фасад петербургского храма с белой лепниной и золотыми куполами", photoPosition: "50% 25%", photoZoom: false,
     title: "По главным местам Петербурга",
     description: "Автобусная экскурсия: знакомые силуэты, панорамы Невы и истории Северной столицы.",
     href: "https://gorbilet.ru/go/OWemZh", oldPrice: 1200, price: 590, discount: 50, priceLabel: "Билет на экскурсию",
@@ -130,7 +130,7 @@ export default function Page() {
           {OFFERS.map((offer) => (
             <li key={offer.href}>
               <a className="offer-ticket" href={offer.href} target="_blank" rel="noopener noreferrer">
-                <div className="offer-visual" data-fit={"photoFit" in offer ? offer.photoFit : undefined}>
+                <div className="offer-visual" data-no-zoom={"photoZoom" in offer && !offer.photoZoom ? true : undefined}>
                   <img className="offer-photo" src={asset(offer.photo)} alt={offer.photoAlt} style={{ objectPosition: offer.photoPosition }} width="1200" height="800" loading="lazy" decoding="async" />
                 </div>
                 <div className="ticket-main">
