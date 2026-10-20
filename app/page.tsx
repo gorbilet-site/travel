@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { typo } from "@/lib/typo";
 import { HeroGallery } from "./components/hero-gallery";
-import { OfferIllustration } from "./components/offer-illustration";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const asset = (path: string) => `${BASE}${path}`;
@@ -34,31 +33,36 @@ const HERO_PHOTOS = [
 // Old and new prices refer to the SAME ticket category.
 const OFFERS = [
   {
-    city: "Москва", illustration: "chocolate",
+    city: "Москва",
+    photo: "/images/offer-chocolate-factory.webp", photoAlt: "Краснокирпичные корпуса и вывеска фабрики «Красный Октябрь»", photoPosition: "50% 45%",
     title: "Фабрика «Красный Октябрь»",
     description: "Экскурсия с шоколадным мастер-классом. Создайте свой десерт и заберите его с собой.",
     href: "https://gorbilet.ru/go/NQAdAH", oldPrice: 2500, price: 1500, discount: 40, priceLabel: "Билет на экскурсию",
   },
   {
-    city: "Петербург", illustration: "bus",
+    city: "Петербург",
+    photo: "/images/hero-city-sunset.webp", photoAlt: "Петербург: стадион и Лахта Центр на фоне яркого заката", photoPosition: "50% 60%",
     title: "По главным местам Петербурга",
     description: "Автобусная экскурсия: знакомые силуэты, панорамы Невы и истории Северной столицы.",
     href: "https://gorbilet.ru/go/OWemZh", oldPrice: 1200, price: 590, discount: 50, priceLabel: "Билет на экскурсию",
   },
   {
-    city: "Нижний Новгород", illustration: "monastery",
+    city: "Нижний Новгород",
+    photo: "/images/offer-pechersky-monastery.webp", photoAlt: "Белокаменные храмы Печерского монастыря с зелёными куполами", photoPosition: "50% 50%",
     title: "Нижний и Печерский монастырь",
     description: "Обзорная экскурсия по городу с посещением монастыря и прогулкой по Рождественской улице.",
     href: "https://gorbilet.ru/go/o0uKCk", oldPrice: 1900, price: 1615, discount: 15, priceLabel: "Взрослый билет",
   },
   {
-    city: "Калининград", illustration: "castle",
+    city: "Калининград",
+    photo: "/images/offer-schaaken-cheese.webp", photoAlt: "Разные сорта сыра в витрине", photoPosition: "50% 50%",
     title: "Замок Шаакен и сыроварня",
     description: "Автобусная поездка к средневековому замку Шаакен и в сыроварню «Шаакендорф».",
     href: "https://gorbilet.ru/go/MIlPKt", oldPrice: 1500, price: 1200, discount: 20, priceLabel: "Билет на экскурсию",
   },
   {
-    city: "Казань", illustration: "tea",
+    city: "Казань",
+    photo: "/images/offer-kazan-kremlin.webp", photoAlt: "Мечеть Кул-Шариф на территории Казанского кремля", photoPosition: "50% 45%",
     title: "Вся Казань за один день",
     description: "Главные места города, Казанский кремль и чаепитие с дегустацией татарских сладостей.",
     href: "https://gorbilet.ru/go/bcrhdG", oldPrice: 2375, price: 1900, discount: 20, priceLabel: "Взрослый билет",
@@ -127,14 +131,15 @@ export default function Page() {
             <li key={offer.href}>
               <a className="offer-ticket" href={offer.href} target="_blank" rel="noopener noreferrer">
                 <div className="offer-visual">
-                  <OfferIllustration kind={offer.illustration} />
-                  <span className="discount-badge" role="img" aria-label={`Скидка ${offer.discount}%`}>
-                    <strong aria-hidden="true">−{offer.discount}%</strong>
-                    <span aria-hidden="true">скидка</span>
-                  </span>
+                  <img className="offer-photo" src={asset(offer.photo)} alt={offer.photoAlt} style={{ objectPosition: offer.photoPosition }} width="1200" height="800" loading="lazy" decoding="async" />
                 </div>
                 <div className="ticket-main">
-                  <span className="offer-city">{offer.city}</span>
+                  <div className="ticket-kicker">
+                    <span className="offer-city">{offer.city}</span>
+                    <span className="discount-badge" role="img" aria-label={`Скидка ${offer.discount}%`}>
+                      <strong aria-hidden="true">−{offer.discount}%</strong>
+                    </span>
+                  </div>
                   <h3>{typo(offer.title)}</h3>
                   <p>{typo(offer.description)}</p>
                 </div>

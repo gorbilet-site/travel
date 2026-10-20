@@ -79,7 +79,7 @@ a:hover .arrow { transform: translate(2px, -2px); }
 .all-cities { position: relative; display: inline-flex; align-items: center; gap: 36px; padding: 17px 28px; margin-top: 28px; border-radius: 999px; color: var(--blue); background: white; font-size: 15px; font-weight: 700; transition: background .2s, color .2s; }
 .all-cities:hover { background: var(--ink); color: white; }
 
-/* Tickets have a perforated price stub. */
+/* Editorial photo cards: natural imagery, quiet typography, clear prices. */
 .offers { padding-top: 64px; padding-inline: 24px; padding-bottom: 40px; }
 .offers-heading { display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px; align-items: end; margin-bottom: 48px; }
 .offers-heading h2 { font-size: clamp(30px, 4.1vw, 56px); }
@@ -88,35 +88,31 @@ a:hover .arrow { transform: translate(2px, -2px); }
 .offer-list { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px; }
 .offer-list > li { min-width: 0; grid-column: span 2; display: grid; }
 .offer-list > li:nth-child(-n+2) { grid-column: span 3; }
-.offer-ticket { min-width: 0; display: flex; flex-direction: column; background: white; border: 1px solid var(--line); border-radius: 26px; transition: transform .2s, box-shadow .2s; }
-.offer-ticket:hover { transform: translateY(-5px); box-shadow: 0 16px 28px #063c9110; }
-.offer-visual { position: relative; display: flex; align-items: center; min-height: 174px; padding: 10px 112px 10px 18px; border-radius: 25px 25px 0 0; background: var(--pale); color: var(--blue); }
-.offer-illustration { display: block; width: 100%; max-width: 260px; height: 154px; }
-.discount-badge { position: absolute; top: 20px; right: 18px; width: 92px; height: 92px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: white; color: var(--blue); border: 1px solid currentColor; border-radius: 50%; }
-.discount-badge::before { content: ""; position: absolute; inset: 5px; border: 1px dashed currentColor; border-radius: inherit; opacity: .5; pointer-events: none; }
-.discount-badge strong { font-family: var(--display); font-weight: 500; font-size: 17px; letter-spacing: -.04em; line-height: 1; white-space: nowrap; }
-.discount-badge > span { font-size: 11px; font-weight: 700; line-height: 1; }
-.offer-list > li:first-child .discount-badge { background: var(--blue); color: white; border-color: var(--blue); }
-.ticket-main { min-width: 0; padding: 26px; flex: 1; }
-.offer-city { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
-.offer-city::before { content: ""; width: 8px; height: 8px; border: 2px solid var(--blue); border-radius: 50%; }
+.offer-ticket { min-width: 0; display: flex; flex-direction: column; background: white; border: 1px solid var(--line); border-radius: 28px; transition: transform .25s, box-shadow .25s; }
+.offer-ticket:hover { transform: translateY(-4px); box-shadow: 0 14px 32px #063c9110; }
+.offer-visual { position: relative; margin: 12px 12px 0; border-radius: 18px; overflow: hidden; aspect-ratio: 16 / 10; background: var(--paper); }
+.offer-list > li:nth-child(-n+2) .offer-visual { aspect-ratio: 1.85; }
+.offer-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.ticket-main { min-width: 0; padding: 24px 26px; flex: 1; }
+.ticket-kicker { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 16px; min-height: 32px; }
+.offer-city { color: #526b91; font-size: 12px; font-weight: 700; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; }
+.discount-badge { display: inline-flex; align-items: center; justify-content: center; padding: 9px 12px; border-radius: 8px; color: var(--blue); background: var(--pale); }
+.discount-badge strong { font-family: var(--display); font-weight: 500; font-size: 13px; letter-spacing: -.03em; line-height: 1; white-space: nowrap; }
 .ticket-main h3 { margin-top: 18px; font-size: clamp(15px, 1.38vw, 20px); letter-spacing: -.025em; line-height: 1.4; overflow-wrap: normal; }
-.ticket-main p { margin-top: 16px; font-size: 15px; }
+.ticket-main p { margin-top: 14px; font-size: 15px; }
 .offer-list > li:nth-child(-n+2) h3 { max-width: 430px; font-size: clamp(19px, 2vw, 27px); }
-.ticket-stub { position: relative; padding: 22px 26px 24px; border-top: 1px dashed #063c914d; }
-.ticket-stub::before, .ticket-stub::after { content: ""; position: absolute; top: -9px; width: 17px; height: 17px; background: var(--paper); border: 1px solid var(--line); border-radius: 50%; }
-.ticket-stub::before { left: -9px; border-top-color: transparent; border-left-color: transparent; transform: rotate(-45deg); }
-.ticket-stub::after { right: -9px; border-top-color: transparent; border-right-color: transparent; transform: rotate(45deg); }
+.ticket-stub { margin: 0 26px 26px; padding-top: 20px; border-top: 1px solid var(--line); }
 .price-label { display: block; font-size: 13px; margin-bottom: 10px; }
 .price-pair { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 18px; }
 .price-pair s { color: #526b91; font-size: 18px; text-decoration-thickness: 1px; white-space: nowrap; }
 .price-pair strong { color: var(--blue); font-family: var(--display); font-weight: 500; font-size: clamp(23px, 2.35vw, 32px); letter-spacing: -.03em; white-space: nowrap; }
-.ticket-action { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 20px; padding: 15px 18px; border-radius: 14px; background: var(--pale); color: var(--blue); font-size: 15px; font-weight: 700; transition: background .2s, color .2s; }
+.ticket-action { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 20px; padding: 15px 18px; border: 1px solid #0069f833; border-radius: 12px; color: var(--blue); font-size: 15px; font-weight: 700; transition: background .2s, color .2s; }
 .offer-ticket:hover .ticket-action { background: var(--blue); color: white; }
-.offer-list > li:first-child .ticket-action { background: var(--blue); color: white; }
-.offer-list > li:first-child .offer-ticket:hover .ticket-action { background: var(--ink); }
 .ticket-action .arrow { width: 18px; height: 18px; }
 .prices-note { max-width: 760px; font-size: 13px; color: #526b91; margin-top: 24px; }
+@media (hover: hover) {
+  .offer-ticket:hover .offer-photo { transform: scale(1.035); }
+}
 
 .socials { margin-top: 32px; background: var(--pale); }
 .social-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -136,7 +132,8 @@ a:hover .arrow { transform: translate(2px, -2px); }
   .hero-story { gap: 32px; }
   .section { padding: 48px 32px; }
   .offers { padding-inline: 8px; }
-  .ticket-main, .ticket-stub { padding: 22px; }
+  .ticket-main { padding: 22px; }
+  .ticket-stub { margin: 0 22px 22px; }
   .offer-list { gap: 18px; }
   .social-list { grid-template-columns: 1fr; }
   .social-link { grid-template-columns: 48px minmax(0, 1fr) 22px; padding: 20px 24px; }
@@ -194,12 +191,13 @@ a:hover .arrow { transform: translate(2px, -2px); }
   .offers-heading h2 { font-size: clamp(25px, 7vw, 40px); line-height: 1.3; }
   .offers-heading .top-label { margin-bottom: 16px; padding: 7px 12px; border-radius: 8px; }
   .offer-list { grid-template-columns: 1fr; gap: 24px; }
-  .ticket-main, .ticket-stub { padding: 22px; }
+  .ticket-main { padding: 20px; }
+  .ticket-stub { margin: 0 20px 20px; padding-top: 18px; }
   .ticket-main h3, .offer-list > li:nth-child(-n+2) h3 { font-size: clamp(16px, 4.4vw, 23px); }
-  .offer-visual { min-height: 156px; padding: 8px 104px 8px 12px; }
-  .offer-illustration { height: 140px; }
-  .discount-badge { top: 18px; right: 14px; width: 84px; height: 84px; }
-  .discount-badge strong { font-size: 15px; }
+  .offer-visual, .offer-list > li:nth-child(-n+2) .offer-visual { margin: 10px 10px 0; border-radius: 18px; aspect-ratio: 4 / 3; }
+  .offer-city { font-size: 11px; }
+  .discount-badge { padding: 8px 10px; }
+  .discount-badge strong { font-size: 12px; }
   .ticket-main p { font-size: 14px; }
   .price-pair strong { font-size: 29px; }
   .prices-note { font-size: 12px; padding-inline: 4px; }
