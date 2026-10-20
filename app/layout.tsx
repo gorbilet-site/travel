@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { initialScrollScript } from "@/lib/initial-scroll";
 import "./globals.css";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -43,6 +44,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
+      <head>
+        <script id="initial-scroll" dangerouslySetInnerHTML={{ __html: initialScrollScript }} />
+      </head>
       <body className={drukWide.variable}>{children}</body>
     </html>
   );
