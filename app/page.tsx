@@ -41,7 +41,7 @@ const OFFERS = [
   },
   {
     city: "Петербург",
-    photo: "/images/hero-city-sunset.webp", photoAlt: "Петербург: стадион и Лахта Центр на фоне яркого заката", photoPosition: "50% 60%",
+    photo: "/images/offer-petersburg.webp", photoAlt: "Крыши Петербурга и золотой купол Исаакиевского собора под облачным небом", photoPosition: "50% 68%",
     title: "По главным местам Петербурга",
     description: "Автобусная экскурсия: знакомые силуэты, панорамы Невы и истории Северной столицы.",
     href: "https://gorbilet.ru/go/OWemZh", oldPrice: 1200, price: 590, discount: 50, priceLabel: "Билет на экскурсию",
