@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { typo } from "@/lib/typo";
+import { HeroGallery } from "./components/hero-gallery";
+import { OfferIllustration } from "./components/offer-illustration";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const asset = (path: string) => `${BASE}${path}`;
@@ -15,46 +17,53 @@ const CITIES = [
 ];
 
 const HERO_PHOTOS = [
+  { src: "/images/hero-rocky-coast.webp", alt: "Путешественник в красной кепке на каменистом морском берегу", width: 960, height: 1280 },
   { src: "/images/hero-gnome.webp", alt: "Бронзовый хомлин на перилах моста в Калининграде", width: 900, height: 1200 },
+  { src: "/images/hero-snowy-peaks.webp", alt: "Заснеженные горные вершины над смотровой площадкой", width: 1000, height: 1333 },
   { src: "/images/hero-church.jpg", alt: "Краснокирпичная колокольня с золотым шпилем на фоне синего неба", width: 960, height: 1280 },
+  { src: "/images/hero-city-sunset.webp", alt: "Огненный закат над стадионом и Лахта Центром в Петербурге", width: 1000, height: 1333 },
   { src: "/images/hero-chapel.webp", alt: "Готическая капелла в парке под радугой", width: 900, height: 1200 },
+  { src: "/images/hero-autumn-canyon.webp", alt: "Озеро среди скал и осенних деревьев", width: 1000, height: 1333 },
   { src: "/images/hero-view.webp", alt: "Дворец земледельцев в Казани", width: 900, height: 1200 },
+  { src: "/images/hero-mountain-evening.webp", alt: "Огни курорта в горной долине на закате", width: 1000, height: 1333 },
+  { src: "/images/hero-seaside-evening.webp", alt: "Вечернее солнце над морем и каменистой набережной", width: 787, height: 1400 },
+  { src: "/images/hero-yellow-cabins.webp", alt: "Жёлтые кабинки канатной дороги на зелёном склоне", width: 788, height: 1400 },
 ];
 
 // Checked on the linked offer pages on 2026-10-19.
 // Old and new prices refer to the SAME ticket category.
 const OFFERS = [
   {
-    city: "Москва", theme: "Попробовать новое",
+    city: "Москва", illustration: "chocolate",
     title: "Фабрика «Красный Октябрь»",
     description: "Экскурсия с шоколадным мастер-классом. Создайте свой десерт и заберите его с собой.",
     href: "https://gorbilet.ru/go/NQAdAH", oldPrice: 2500, price: 1500, discount: 40, priceLabel: "Билет на экскурсию",
   },
   {
-    city: "Петербург", theme: "Влюбиться в город",
+    city: "Петербург", illustration: "bus",
     title: "По главным местам Петербурга",
     description: "Автобусная экскурсия: знакомые силуэты, панорамы Невы и истории Северной столицы.",
     href: "https://gorbilet.ru/go/OWemZh", oldPrice: 1200, price: 590, discount: 50, priceLabel: "Билет на экскурсию",
   },
   {
-    city: "Нижний Новгород", theme: "Свернуть с привычного пути",
+    city: "Нижний Новгород", illustration: "monastery",
     title: "Нижний и Печерский монастырь",
     description: "Обзорная экскурсия по городу с посещением монастыря и прогулкой по Рождественской улице.",
     href: "https://gorbilet.ru/go/o0uKCk", oldPrice: 1900, price: 1615, discount: 15, priceLabel: "Взрослый билет",
   },
   {
-    city: "Калининград", theme: "Уехать за впечатлениями",
+    city: "Калининград", illustration: "castle",
     title: "Замок Шаакен и сыроварня",
     description: "Автобусная поездка к средневековому замку Шаакен и в сыроварню «Шаакендорф».",
     href: "https://gorbilet.ru/go/MIlPKt", oldPrice: 1500, price: 1200, discount: 20, priceLabel: "Билет на экскурсию",
   },
   {
-    city: "Казань", theme: "Узнать город на вкус",
+    city: "Казань", illustration: "tea",
     title: "Вся Казань за один день",
     description: "Главные места города, Казанский кремль и чаепитие с дегустацией татарских сладостей.",
     href: "https://gorbilet.ru/go/bcrhdG", oldPrice: 2375, price: 1900, discount: 20, priceLabel: "Взрослый билет",
   },
-];
+] as const;
 
 const SOCIALS = [
   { name: "Telegram", handle: "@gorbilet_travel", href: "https://t.me/gorbilet_travel", icon: "/social/telegram.svg" },
@@ -66,42 +75,9 @@ const money = (value: number) => `${new Intl.NumberFormat("ru-RU").format(value)
 function Arrow() {
   return <svg className="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg>;
 }
-const STAMP_R = 46;
-const STAMP_C = 2 * Math.PI * STAMP_R;
-const TILTS = [-12, 8, -6, 10, -9];
-
-function Stamp({ theme, discount, index }: { theme: string; discount: number; index: number }) {
-  const label = `${theme.toUpperCase()} • ГОРБИЛЕТ • `;
-  const fontSize = Math.min(11, STAMP_C / (label.length * 0.78));
-  const ring = `M60,${60 - STAMP_R} a${STAMP_R},${STAMP_R} 0 1,1 0,${STAMP_R * 2} a${STAMP_R},${STAMP_R} 0 1,1 0,-${STAMP_R * 2}`;
-  const id = `stamp-ring-${index}`;
-  return (
-    <svg className="stamp" viewBox="0 0 120 120" aria-hidden="true" style={{ "--tilt": `${TILTS[index % TILTS.length]}deg` } as React.CSSProperties}>
-      <g filter="url(#ink)">
-        <circle className="stamp-disk" cx="60" cy="60" r="58" />
-        <circle className="stamp-line" cx="60" cy="60" r="58" strokeWidth="1.6" />
-        <circle className="stamp-line" cx="60" cy="60" r="54.5" strokeWidth=".8" />
-        <circle className="stamp-line" cx="60" cy="60" r="36" strokeWidth="1" strokeDasharray="2.2 3.2" />
-        <path id={id} d={ring} fill="none" />
-        <text className="stamp-ring" style={{ fontSize: `${fontSize.toFixed(2)}px` }}>
-          <textPath href={`#${id}`} textLength={STAMP_C.toFixed(1)} lengthAdjust="spacing">{label}</textPath>
-        </text>
-        <text className="stamp-value" x="60" y="63" textAnchor="middle">−{discount}%</text>
-        <text className="stamp-caption" x="60" y="78" textAnchor="middle">скидка</text>
-      </g>
-    </svg>
-  );
-}
-
 export default function Page() {
   return (
     <main className="site-shell" id="top">
-      <svg className="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
-        <filter id="ink" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.4" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </svg>
       <a className="skip-link" href="#cities">Перейти к маршрутам</a>
       <header className="site-nav">
         <a className="nav-brand" href="#top" aria-label="Горбилет — на главную">
@@ -115,15 +91,7 @@ export default function Page() {
             <h1 id="hero-title"><span>Ваш проводник</span><span>по впечатлениям</span></h1>
           </div>
         </div>
-        <div className="photo-album">
-          <ul className="hero-collage" aria-label="Кадры из наших поездок">
-            {HERO_PHOTOS.map((photo, index) => (
-              <li className={`hero-photo hero-photo-${index + 1}`} key={photo.src}>
-                <img src={asset(photo.src)} alt={photo.alt} width={photo.width} height={photo.height} loading={index < 2 ? "eager" : "lazy"} fetchPriority={index === 1 ? "high" : "auto"} />
-              </li>
-            ))}
-          </ul>
-        </div>
+        <HeroGallery photos={HERO_PHOTOS.map((photo) => ({ ...photo, src: asset(photo.src) }))} />
         <div className="hero-story">
           <h2><span>Помогаем</span><span>{typo("не пропускать жизнь")}</span></h2>
           <p>{typo("Выбирайте город, ловите впечатления и сохраняйте планы на следующую поездку. Мы собрали интересные варианты — вам остаётся решить, куда ехать.")}</p>
@@ -155,13 +123,18 @@ export default function Page() {
           <p>{typo("Запланировать поездку прямо сейчас — проще, чем кажется. Выберите свой повод.")}</p>
         </div>
         <ol className="offer-list">
-          {OFFERS.map((offer, index) => (
+          {OFFERS.map((offer) => (
             <li key={offer.href}>
               <a className="offer-ticket" href={offer.href} target="_blank" rel="noopener noreferrer">
+                <div className="offer-visual">
+                  <OfferIllustration kind={offer.illustration} />
+                  <span className="discount-badge" role="img" aria-label={`Скидка ${offer.discount}%`}>
+                    <strong aria-hidden="true">−{offer.discount}%</strong>
+                    <span aria-hidden="true">скидка</span>
+                  </span>
+                </div>
                 <div className="ticket-main">
-                  <Stamp theme={offer.theme} discount={offer.discount} index={index} />
                   <span className="offer-city">{offer.city}</span>
-                  <span className="sr-only">{offer.theme}. Скидка {offer.discount}%.</span>
                   <h3>{typo(offer.title)}</h3>
                   <p>{typo(offer.description)}</p>
                 </div>
