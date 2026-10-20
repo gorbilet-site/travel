@@ -16,13 +16,13 @@ const CITIES = [
 ];
 
 const HERO_PHOTOS = [
+  { src: "/images/hero-snowy-peaks.webp", alt: "Заснеженные горные вершины над смотровой площадкой", width: 1000, height: 1333 },
+  { src: "/images/hero-autumn-canyon.webp", alt: "Озеро среди скал и осенних деревьев", width: 1000, height: 1333 },
   { src: "/images/hero-rocky-coast.webp", alt: "Путешественник в красной кепке на каменистом морском берегу", width: 960, height: 1280 },
   { src: "/images/hero-gnome.webp", alt: "Бронзовый хомлин на перилах моста в Калининграде", width: 900, height: 1200 },
-  { src: "/images/hero-snowy-peaks.webp", alt: "Заснеженные горные вершины над смотровой площадкой", width: 1000, height: 1333 },
   { src: "/images/hero-church.jpg", alt: "Краснокирпичная колокольня с золотым шпилем на фоне синего неба", width: 960, height: 1280 },
   { src: "/images/hero-city-sunset.webp", alt: "Огненный закат над стадионом и Лахта Центром в Петербурге", width: 1000, height: 1333 },
   { src: "/images/hero-chapel.webp", alt: "Готическая капелла в парке под радугой", width: 900, height: 1200 },
-  { src: "/images/hero-autumn-canyon.webp", alt: "Озеро среди скал и осенних деревьев", width: 1000, height: 1333 },
   { src: "/images/hero-view.webp", alt: "Дворец земледельцев в Казани", width: 900, height: 1200 },
   { src: "/images/hero-mountain-evening.webp", alt: "Огни курорта в горной долине на закате", width: 1000, height: 1333 },
   { src: "/images/hero-seaside-evening.webp", alt: "Вечернее солнце над морем и каменистой набережной", width: 787, height: 1400 },
@@ -41,7 +41,7 @@ const OFFERS = [
   },
   {
     city: "Петербург",
-    photo: "/images/offer-petersburg.webp", photoAlt: "Крыши Петербурга и золотой купол Исаакиевского собора под облачным небом", photoPosition: "50% 68%",
+    photo: "/images/offer-petersburg-isaac.webp", photoAlt: "Исаакиевский собор с золотым куполом на фоне ясного синего неба", photoPosition: "50% 35%",
     title: "По главным местам Петербурга",
     description: "Автобусная экскурсия: знакомые силуэты, панорамы Невы и истории Северной столицы.",
     href: "https://gorbilet.ru/go/OWemZh", oldPrice: 1200, price: 590, discount: 50, priceLabel: "Билет на экскурсию",
